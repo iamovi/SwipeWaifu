@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "robots.txt"],
+      includeAssets: ["favicon.ico", "robots.txt", "waifu-pwa.png"],
       manifest: {
         name: "SwipeWaifu",
         short_name: "SwipeWaifu",
@@ -29,17 +29,17 @@ export default defineConfig(({ mode }) => ({
         start_url: "./",
         icons: [
           {
-            src: "pwa-192x192.png",
+            src: "waifu-pwa.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "pwa-512x512.png",
+            src: "waifu-pwa.png",
             sizes: "512x512",
             type: "image/png",
           },
           {
-            src: "pwa-512x512.png",
+            src: "waifu-pwa.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "maskable",
