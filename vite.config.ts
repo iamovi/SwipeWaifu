@@ -47,9 +47,9 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       workbox: {
-        globPatterns: [],
-        navigateFallback: "/SwipeWaifu/offline.html",
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
         navigateFallbackDenylist: [/^\/SwipeWaifu\/docs/],
+        navigateFallback: "/SwipeWaifu/offline.html",
       },
     }),
   ].filter(Boolean),
