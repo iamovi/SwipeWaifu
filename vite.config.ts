@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "robots.txt", "waifu-pwa.png"],
+      includeAssets: ["favicon.ico", "robots.txt", "waifu-pwa.png", "offline.html"],
       manifest: {
         name: "SwipeWaifu",
         short_name: "SwipeWaifu",
@@ -49,6 +49,7 @@ export default defineConfig(({ mode }) => ({
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
         navigateFallbackDenylist: [/^\/SwipeWaifu\/docs/],
+        navigateFallback: "/SwipeWaifu/offline.html",
       },
     }),
   ].filter(Boolean),
