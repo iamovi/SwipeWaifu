@@ -5,7 +5,7 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: '/waifu-gallery/',
+  base: '/SwipeWaifu/',
   server: {
     host: "::",
     port: 8080,
