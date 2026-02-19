@@ -1,18 +1,959 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello Docs</title>
-  <script>
-    if (location.pathname.endsWith('/docs')) {
-      location.replace(location.pathname + '/');
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Primary Meta -->
+<title>SwipeWaifu — Docs</title>
+<link rel="icon" href="https://ik.imagekit.io/iamovi/SwipeWaifu/main.png">
+<meta name="title" content="SwipeWaifu — Discover Anime Waifu & Chat with Fanbase">
+<meta name="description" content="SwipeWaifu lets you discover unlimited anime waifu images across 30+ categories, save favorites, auto-slide, and chat with the anime community. Available on Android & Web.">
+<meta name="keywords" content="SwipeWaifu, anime waifu, waifu app, anime images, neko, shinobu, megumin, anime community, PWA, android app, open source anime">
+<meta name="author" content="Ovi ren">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#111111">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://iamovi.github.io/SwipeWaifu/docs/">
+<meta property="og:title" content="SwipeWaifu — Discover Anime Waifu & Chat with Fanbase">
+<meta property="og:description" content="Swipe through 30+ anime waifu categories, save your favorites, and chat with the anime community. Free, open source, available on Android & Web.">
+<meta property="og:image" content="https://ik.imagekit.io/iamovi/SwipeWaifu/main.png">
+<meta property="og:image:alt" content="SwipeWaifu app preview">
+<meta property="og:site_name" content="SwipeWaifu">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://iamovi.github.io/SwipeWaifu/docs/">
+<meta name="twitter:title" content="SwipeWaifu — Discover Anime Waifu & Chat with Fanbase">
+<meta name="twitter:description" content="Swipe through 30+ anime waifu categories, save your favorites, and chat with the anime community. Free, open source, available on Android & Web.">
+<meta name="twitter:image" content="https://ik.imagekit.io/iamovi/SwipeWaifu/main.png">
+
+<!-- App / PWA -->
+<meta name="application-name" content="SwipeWaifu">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="SwipeWaifu">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://iamovi.github.io/SwipeWaifu/">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --ink:    #111111;
+    --white:  #fafaf8;
+    --paper:  #f5f3ee;
+    --mid:    #e8e5de;
+    --muted:  #888;
+    --accent: #d63030;
+    --border: 2px solid #111;
+    --shadow: 4px 4px 0 #111;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ── CUSTOM SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 12px; }
+
+  ::-webkit-scrollbar-track {
+    background: var(--paper);
+    background-image:
+      linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+    background-size: 8px 8px;
+    border-left: 2px solid var(--ink);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--ink);
+    border: 2px solid var(--paper);
+    border-radius: 2px;
+    box-shadow: inset 2px 0 0 #333, inset -1px 0 0 #555;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2a2a2a;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background: var(--accent);
+  }
+
+  ::-webkit-scrollbar-corner { background: var(--paper); }
+
+  /* Firefox */
+  * { scrollbar-width: thin; scrollbar-color: var(--ink) var(--paper); }
+
+  body {
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px),
+      linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    font-family: 'Comic Neue', cursive;
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 68px;
+    width: 2px; height: 100%;
+    background: rgba(180,40,40,0.25);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.75rem; height: 58px;
+    border-bottom: 2px solid #2a2a2a;
+  }
+
+  .nav-logo {
+    font-family: 'Bangers', cursive;
+    font-size: 1.7rem; letter-spacing: 2px;
+    color: var(--white); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-logo .accent { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 0.2rem; list-style: none; }
+
+  .nav-links a {
+    font-family: 'Bangers', cursive;
+    font-size: 1rem; letter-spacing: 1px;
+    color: rgba(255,255,255,0.6); text-decoration: none;
+    padding: 5px 11px; border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: none; flex-direction: column;
+    justify-content: center; gap: 5px;
+    width: 36px; height: 36px;
+    background: none; border: 1px solid #444;
+    border-radius: 4px; cursor: pointer; padding: 7px;
+  }
+  .hamburger span {
+    display: block; height: 2px; background: var(--white);
+    border-radius: 2px; transition: transform 0.25s, opacity 0.25s;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── MOBILE DRAWER ── */
+  .mobile-menu {
+    display: none; position: fixed;
+    top: 58px; left: 0; right: 0; bottom: 0;
+    z-index: 199; pointer-events: none;
+  }
+  .mob-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.55);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .mob-drawer {
+    position: absolute; top: 0; right: 0;
+    width: min(275px, 82vw); height: 100%;
+    background: var(--ink); border-left: 2px solid #2a2a2a;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    display: flex; flex-direction: column;
+  }
+  .mobile-menu.open { pointer-events: all; }
+  .mobile-menu.open .mob-overlay { opacity: 1; }
+  .mobile-menu.open .mob-drawer { transform: translateX(0); }
+
+  .drawer-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.25rem; border-bottom: 1px solid #2a2a2a;
+  }
+  .drawer-logo {
+    font-family: 'Bangers', cursive;
+    font-size: 1.3rem; letter-spacing: 2px; color: var(--white);
+  }
+  .drawer-logo .accent { color: var(--accent); }
+  .drawer-x {
+    background: none; border: 1px solid #444; color: rgba(255,255,255,0.5);
+    width: 28px; height: 28px; border-radius: 4px;
+    cursor: pointer; font-size: 0.8rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .drawer-x:hover { background: #333; color: white; }
+
+  .drawer-links { list-style: none; padding: 0.5rem 0; flex: 1; }
+  .drawer-links li { border-bottom: 1px solid #1e1e1e; }
+  .drawer-links li:last-child { border: none; }
+  .drawer-links a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0.85rem 1.25rem;
+    font-family: 'Bangers', cursive;
+    font-size: 1.15rem; letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.65); text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+  }
+  .drawer-links a i { width: 16px; text-align: center; font-size: 0.9rem; color: #555; }
+  .drawer-links a:hover { background: #1a1a1a; color: white; }
+  .drawer-links a:hover i { color: var(--accent); }
+
+  .drawer-foot {
+    padding: 1rem 1.25rem; border-top: 1px solid #2a2a2a;
+  }
+  .drawer-foot a {
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    background: var(--accent); color: white;
+    font-family: 'Bangers', cursive; font-size: 1.05rem; letter-spacing: 2px;
+    padding: 8px 18px; border-radius: 4px;
+    text-decoration: none; border: 1px solid rgba(255,255,255,0.15);
+    transition: opacity 0.15s;
+  }
+  .drawer-foot a:hover { opacity: 0.85; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; min-height: 88vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 80px 2rem;
+    background-image: url('https://ik.imagekit.io/iamovi/SwipeWaifu/main.png');
+    background-size: cover; background-position: center;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.62);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; max-width: 720px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--accent); color: white;
+    font-family: 'Bangers', cursive; font-size: 0.82rem; letter-spacing: 2.5px;
+    padding: 3px 14px; border-radius: 99px;
+    border: 1px solid rgba(255,255,255,0.25); margin-bottom: 1.1rem;
+  }
+  .hero-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(4rem, 11vw, 8.5rem);
+    letter-spacing: 3px; line-height: 0.88;
+    color: var(--white);
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.55);
+    margin-bottom: 0.55rem;
+    animation: drop-in 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  @keyframes drop-in {
+    from { transform: translateY(-36px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+  .hero-sub {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(1rem, 2.5vw, 1.4rem); letter-spacing: 4px;
+    color: rgba(255,255,255,0.45); margin-bottom: 1.5rem;
+  }
+  .hero-desc {
+    font-size: 0.97rem; font-weight: 700;
+    color: rgba(255,255,255,0.75);
+    max-width: 500px; margin: 0 auto 1.75rem;
+    line-height: 1.65;
+  }
+  .hero-btns {
+    display: flex; gap: 0.65rem; justify-content: center; flex-wrap: wrap;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    font-family: 'Bangers', cursive;
+    font-size: 1rem; letter-spacing: 1.5px;
+    padding: 8px 22px; border: 2px solid var(--ink);
+    border-radius: 4px; cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: var(--shadow);
+  }
+  .btn:hover  { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+  .btn:active { transform: translate(1px,1px);   box-shadow: 2px 2px 0 var(--ink); }
+
+  .btn-white  { background: var(--white); color: var(--ink); }
+  .btn-dark   { background: var(--ink);   color: var(--white); border-color: var(--ink); }
+  .btn-accent { background: var(--accent); color: white; border-color: #9b1f1f; box-shadow: 4px 4px 0 #7a1515; }
+  .btn-accent:hover { box-shadow: 6px 6px 0 #7a1515; }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    background: var(--ink);
+    overflow: hidden; padding: 9px 0; white-space: nowrap;
+    border-top: 1px solid #222; border-bottom: 1px solid #222;
+    position: relative; z-index: 2;
+  }
+  .marquee-inner {
+    display: inline-flex; gap: 2.5rem;
+    animation: marquee 24s linear infinite;
+    font-family: 'Bangers', cursive; font-size: 0.95rem;
+    letter-spacing: 2px; color: rgba(255,255,255,0.45);
+  }
+  .marquee-inner i { color: var(--accent); margin-right: 5px; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── LAYOUT ── */
+  .section {
+    position: relative; z-index: 2;
+    max-width: 1020px; margin: 0 auto; padding: 3.25rem 2rem;
+  }
+  .section-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(1.7rem, 3.5vw, 2.5rem); letter-spacing: 2px;
+    margin-bottom: 1.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 2px; background: var(--ink);
+  }
+  .divider { height: 2px; background: var(--ink); position: relative; z-index: 2; }
+
+  /* ── PANELS ── */
+  .panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+    gap: 1.1rem;
+  }
+  .panel {
+    background: var(--white); border: var(--border);
+    border-radius: 5px; padding: 1.3rem;
+    box-shadow: var(--shadow); position: relative;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .panel:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+  .panel-bar {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 3px; background: var(--ink);
+    border-radius: 5px 5px 0 0;
+  }
+  .panel-icon { font-size: 1.35rem; color: var(--ink); margin-bottom: 0.55rem; display: block; }
+  .panel h3 { font-family: 'Bangers', cursive; font-size: 1.15rem; letter-spacing: 1px; margin-bottom: 0.35rem; }
+  .panel p  { font-size: 0.88rem; font-weight: 700; color: #444; line-height: 1.6; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--white); border: var(--border);
+    border-radius: 6px; padding: 1.1rem 1.4rem;
+    box-shadow: var(--shadow); position: relative;
+    margin: 1.4rem 0; font-size: 0.95rem;
+    font-weight: 700; line-height: 1.6;
+  }
+  .callout-label {
+    position: absolute; top: -11px; left: 14px;
+    background: var(--ink); color: var(--white);
+    font-family: 'Bangers', cursive; font-size: 0.75rem;
+    letter-spacing: 2px; padding: 1px 10px; border-radius: 99px;
+  }
+  .callout.red-bar { border-left: 4px solid var(--accent); }
+
+  /* ── CATEGORIES ── */
+  .cat-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.1rem; }
+  .cat-tag {
+    background: var(--white); color: var(--ink);
+    font-family: 'Bangers', cursive; font-size: 0.88rem; letter-spacing: 1px;
+    padding: 2px 11px; border: 2px solid var(--ink);
+    border-radius: 99px; box-shadow: 2px 2px 0 var(--ink);
+    transition: transform 0.1s; cursor: default;
+  }
+  .cat-tag:hover { transform: translate(-1px,-1px); }
+  .cat-tag.inv { background: var(--ink); color: var(--white); }
+
+  /* ── DOWNLOAD SECTION ── */
+  .dl-wrap {
+    background: var(--ink); padding: 3.25rem 2rem;
+    position: relative; z-index: 2;
+  }
+  .dl-inner { max-width: 1020px; margin: 0 auto; }
+  .dl-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 3px;
+    color: var(--white); text-align: center; margin-bottom: 0.25rem;
+  }
+  .dl-sub {
+    text-align: center; color: var(--muted);
+    font-size: 0.9rem; font-weight: 700; margin-bottom: 2.25rem;
+  }
+  .dl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1.1rem;
+  }
+  .dl-card {
+    background: #181818; border: 1px solid #2e2e2e;
+    border-radius: 6px; padding: 1.6rem 1.1rem;
+    text-align: center; transition: border-color 0.15s, transform 0.12s;
+  }
+  .dl-card:hover { border-color: #555; transform: translateY(-2px); }
+  .dl-card.dim { opacity: 0.45; }
+  .dl-icon { font-size: 2.6rem; color: rgba(255,255,255,0.75); margin-bottom: 0.7rem; display: block; }
+  .dl-os { font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; color: var(--white); margin-bottom: 0.18rem; }
+  .dl-ver { font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 1rem; }
+  .coming-tag {
+    display: inline-block; background: #222; color: #666;
+    font-family: 'Bangers', cursive; font-size: 0.82rem;
+    letter-spacing: 2px; padding: 4px 12px;
+    border-radius: 99px; border: 1px solid #333;
+  }
+
+  /* ── INSTALL GUIDE ── */
+  .install-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.1rem;
+  }
+
+  /* ── SHORTCUTS TABLE ── */
+  .shorts-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--white); border: var(--border);
+    border-radius: 5px; overflow: hidden; box-shadow: var(--shadow);
+  }
+  .shorts-table th {
+    background: var(--ink); color: var(--white);
+    font-family: 'Bangers', cursive; font-size: 0.95rem; letter-spacing: 2px;
+    padding: 9px 16px; text-align: left; border-bottom: 2px solid #333;
+  }
+  .shorts-table td {
+    padding: 9px 16px; border-bottom: 1px solid var(--mid);
+    font-weight: 700; font-size: 0.88rem; color: #333;
+  }
+  .shorts-table tr:last-child td { border-bottom: none; }
+  .shorts-table tr:hover td { background: var(--paper); }
+  kbd {
+    display: inline-block; background: var(--ink); color: var(--white);
+    font-family: 'Bangers', cursive; font-size: 0.82rem; letter-spacing: 1px;
+    padding: 1px 7px; border-radius: 3px; margin: 1px;
+    box-shadow: 2px 2px 0 #444;
+  }
+
+  /* ── CONTRIBUTE ── */
+  .oss-banner {
+    display: flex; align-items: center; gap: 1.2rem;
+    background: var(--ink); border: var(--border);
+    border-radius: 5px; padding: 1.4rem 1.75rem;
+    box-shadow: var(--shadow); margin-bottom: 2.25rem; flex-wrap: wrap;
+  }
+  .oss-icon { font-size: 2.2rem; color: var(--white); flex-shrink: 0; }
+  .oss-text { flex: 1; min-width: 160px; }
+  .oss-title {
+    font-family: 'Bangers', cursive; font-size: 1.45rem;
+    letter-spacing: 2px; color: var(--white); line-height: 1;
+  }
+  .oss-sub { color: var(--muted); font-size: 0.84rem; font-weight: 700; margin-top: 3px; }
+
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+    gap: 1.1rem; margin-bottom: 2.25rem;
+  }
+  .step-card {
+    background: var(--white); border: var(--border);
+    border-radius: 5px; padding: 1.3rem;
+    box-shadow: var(--shadow); position: relative; overflow: hidden;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .step-card:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+  .step-num {
+    position: absolute; top: -6px; right: 8px;
+    font-family: 'Bangers', cursive; font-size: 4rem;
+    color: rgba(0,0,0,0.045); line-height: 1; pointer-events: none;
+  }
+  .step-icon { font-size: 1.2rem; color: var(--accent); margin-bottom: 0.5rem; }
+  .step-card h3 { font-family: 'Bangers', cursive; font-size: 1.15rem; letter-spacing: 1px; margin-bottom: 0.35rem; }
+  .step-card p  { font-size: 0.87rem; font-weight: 700; color: #444; line-height: 1.6; }
+  .code-block {
+    background: #1a1a1a; color: #aee8ae;
+    font-family: 'Courier New', monospace; font-size: 0.73rem;
+    padding: 0.55rem 0.85rem; border-radius: 3px; margin-top: 0.65rem;
+    line-height: 1.7; overflow-x: auto;
+  }
+  .code-cmt { color: #555; }
+
+  .step-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    margin-top: 0.65rem; color: var(--accent);
+    font-family: 'Bangers', cursive; font-size: 0.9rem; letter-spacing: 1px;
+    text-decoration: none; border-bottom: 1px solid var(--accent);
+    transition: opacity 0.15s;
+  }
+  .step-link:hover { opacity: 0.65; }
+
+  .sub-title {
+    font-family: 'Bangers', cursive; font-size: 1.45rem;
+    letter-spacing: 2px; margin: 1.75rem 0 0.9rem;
+    display: flex; align-items: center; gap: 0.55rem;
+  }
+
+  .license-box {
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    background: var(--white); border: var(--border);
+    border-left: 4px solid var(--accent); border-radius: 5px;
+    padding: 1.4rem; box-shadow: var(--shadow); margin-top: 1.75rem;
+  }
+  .lic-icon { font-size: 1.8rem; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+  .lic-title { font-family: 'Bangers', cursive; font-size: 1.3rem; letter-spacing: 2px; margin-bottom: 0.35rem; }
+  .lic-text  { font-size: 0.87rem; font-weight: 700; color: #444; line-height: 1.65; max-width: 580px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink); color: rgba(255,255,255,0.45);
+    text-align: center; padding: 2.25rem 2rem;
+    position: relative; z-index: 2; border-top: 2px solid #1e1e1e;
+  }
+  .footer-logo {
+    font-family: 'Bangers', cursive; font-size: 1.6rem;
+    letter-spacing: 2px; color: var(--white); margin-bottom: 0.2rem;
+  }
+  .footer-logo .accent { color: var(--accent); }
+  .footer-links {
+    display: flex; justify-content: center; gap: 1.4rem;
+    margin: 1rem 0; flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: rgba(255,255,255,0.4); text-decoration: none;
+    font-size: 0.85rem; font-weight: 700;
+    display: flex; align-items: center; gap: 5px;
+    transition: color 0.15s;
+  }
+  .footer-links a:hover { color: white; }
+  .footer-copy { font-size: 0.76rem; }
+
+  /* ── FADE IN ── */
+  .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease, transform 0.4s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-menu { display: block; }
+    .hero-title { font-size: 3.8rem; }
+    .panel-grid, .steps-grid, .dl-grid, .install-grid { grid-template-columns: 1fr; }
+    .oss-banner { flex-direction: column; }
+    .license-box { flex-direction: column; }
+    body::before { display: none; }
+  }
+</style>
 </head>
 <body>
-  <h1>Hello World from /docs/!</h1>
-  <p>This is a static test page for GitHub Pages.</p>
-  <a href="/SwipeWaifu/">Go back to main app</a>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><i class="fa-solid fa-bolt"></i> Swipe<span class="accent">Waifu</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#download">Download</a></li>
+    <li><a href="#shortcuts">Shortcuts</a></li>
+    <li><a href="#contribute">Contribute</a></li>
+    <li><a href="https://github.com/iamovi/SwipeWaifu" target="_blank">GitHub ↗</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mob-overlay" id="mobOverlay"></div>
+  <div class="mob-drawer">
+    <div class="drawer-head">
+      <div class="drawer-logo"><i class="fa-solid fa-bolt"></i> Swipe<span class="accent">Waifu</span></div>
+      <button class="drawer-x" id="drawerX"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <ul class="drawer-links">
+      <li><a href="#features"   class="dl-link"><i class="fa-solid fa-star"></i>         Features</a></li>
+      <li><a href="#download"   class="dl-link"><i class="fa-solid fa-download"></i>     Download</a></li>
+      <li><a href="#shortcuts"  class="dl-link"><i class="fa-solid fa-keyboard"></i>     Shortcuts</a></li>
+      <li><a href="#contribute" class="dl-link"><i class="fa-solid fa-code-fork"></i>    Contribute</a></li>
+      <li><a href="https://iamovi.github.io/SwipeWaifu/" target="_blank"><i class="fa-solid fa-globe"></i> Live App</a></li>
+    </ul>
+    <div class="drawer-foot">
+      <a href="https://github.com/iamovi/SwipeWaifu" target="_blank">
+        <i class="fa-brands fa-github"></i> Star on GitHub
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i class="fa-solid fa-star"></i> VERSION 1.1.0 — NOW ON ANDROID</div>
+    <h1 class="hero-title">SWIPE<br>WAIFU</h1>
+    <p class="hero-sub">DISCOVER &nbsp;·&nbsp; COLLECT &nbsp;·&nbsp; CHAT</p>
+    <p class="hero-desc">Discover unlimited anime waifu images. Swipe through 30+ categories, save favorites, and chat with the Anime Fanbase community.</p>
+    <div class="hero-btns">
+      <a href="#download" class="btn btn-white"><i class="fa-solid fa-download"></i> Download</a>
+      <a href="https://iamovi.github.io/SwipeWaifu/" target="_blank" class="btn btn-dark"><i class="fa-solid fa-globe"></i> Try Online</a>
+      <a href="https://github.com/iamovi/SwipeWaifu" target="_blank" class="btn btn-accent"><i class="fa-brands fa-github"></i> GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span><i class="fa-solid fa-layer-group"></i>30+ CATEGORIES</span>
+    <span><i class="fa-solid fa-comments"></i>COMMUNITY CHAT</span>
+    <span><i class="fa-solid fa-heart"></i>SAVE FAVORITES</span>
+    <span><i class="fa-solid fa-keyboard"></i>KEYBOARD SHORTCUTS</span>
+    <span><i class="fa-solid fa-mobile-screen"></i>PWA SUPPORT</span>
+    <span><i class="fa-solid fa-circle-half-stroke"></i>DARK / LIGHT THEME</span>
+    <span><i class="fa-solid fa-volume-high"></i>SOUND EFFECTS</span>
+    <span><i class="fa-solid fa-shield-halved"></i>NSFW MODE</span>
+    <span><i class="fa-solid fa-layer-group"></i>30+ CATEGORIES</span>
+    <span><i class="fa-solid fa-comments"></i>COMMUNITY CHAT</span>
+    <span><i class="fa-solid fa-heart"></i>SAVE FAVORITES</span>
+    <span><i class="fa-solid fa-keyboard"></i>KEYBOARD SHORTCUTS</span>
+    <span><i class="fa-solid fa-mobile-screen"></i>PWA SUPPORT</span>
+    <span><i class="fa-solid fa-circle-half-stroke"></i>DARK / LIGHT THEME</span>
+    <span><i class="fa-solid fa-volume-high"></i>SOUND EFFECTS</span>
+    <span><i class="fa-solid fa-shield-halved"></i>NSFW MODE</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <h2 class="section-title fade-in">FEATURES</h2>
+  <div class="panel-grid">
+    <div class="panel fade-in"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-hand-pointer"></i></span>
+      <h3>Swipe or Click</h3>
+      <p>Fetch random waifu images instantly. Swipe on mobile, click on desktop.</p>
+    </div>
+    <div class="panel fade-in"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-th-large"></i></span>
+      <h3>30+ SFW Categories</h3>
+      <p>Waifu, neko, shinobu, megumin and many more. Browse by type or go random.</p>
+    </div>
+    <div class="panel fade-in"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-user-shield"></i></span>
+      <h3>NSFW Mode</h3>
+      <p>Age-verified NSFW content available. Toggled safely behind a verification gate.</p>
+    </div>
+    <div class="panel fade-in"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-heart"></i></span>
+      <h3>Favorites Collection</h3>
+      <p>Save your picks and download images directly to your device.</p>
+    </div>
+    <div class="panel fade-in"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-play-circle"></i></span>
+      <h3>Auto-Slide Mode</h3>
+      <p>Let waifus cycle automatically. Speed options: 2s, 3s, 5s, or 10s.</p>
+    </div>
+    <div class="panel fade-in"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+      <h3>History Navigation</h3>
+      <p>Go back and forward through your viewing history. Nothing gets lost.</p>
+    </div>
+    <div class="panel fade-in"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-comments"></i></span>
+      <h3>Community Chat</h3>
+      <p>Talk with anime fans in the built-in Talks community section.</p>
+    </div>
+    <div class="panel fade-in"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-circle-half-stroke"></i></span>
+      <h3>Dark / Light Theme</h3>
+      <p>Switch modes any time. Both are clean and easy on the eyes.</p>
+    </div>
+    <div class="panel fade-in"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-mobile-screen"></i></span>
+      <h3>PWA Support</h3>
+      <p>Install on mobile or desktop like a native app. Works offline too.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CATEGORIES -->
+<section class="section fade-in">
+  <h2 class="section-title">CATEGORIES</h2>
+  <div class="callout red-bar">
+    <span class="callout-label">SFW</span>
+    30+ SFW categories to browse — swipe through any of these or go completely random.
+  </div>
+  <div class="cat-tags">
+    <span class="cat-tag">waifu</span><span class="cat-tag">neko</span>
+    <span class="cat-tag">shinobu</span><span class="cat-tag">megumin</span>
+    <span class="cat-tag">bully</span><span class="cat-tag">cuddle</span>
+    <span class="cat-tag">cry</span><span class="cat-tag">hug</span>
+    <span class="cat-tag">awoo</span><span class="cat-tag">kiss</span>
+    <span class="cat-tag">lick</span><span class="cat-tag">pat</span>
+    <span class="cat-tag">smug</span><span class="cat-tag">bonk</span>
+    <span class="cat-tag">yeet</span><span class="cat-tag">blush</span>
+    <span class="cat-tag">smile</span><span class="cat-tag">wave</span>
+    <span class="cat-tag">nom</span><span class="cat-tag">bite</span>
+    <span class="cat-tag">glomp</span><span class="cat-tag">slap</span>
+    <span class="cat-tag">kill</span><span class="cat-tag">happy</span>
+    <span class="cat-tag">wink</span><span class="cat-tag">poke</span>
+    <span class="cat-tag">dance</span><span class="cat-tag">cringe</span>
+    <span class="cat-tag inv">+ NSFW</span>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<div class="dl-wrap" id="download">
+  <div class="dl-inner">
+    <h2 class="dl-title fade-in">DOWNLOAD</h2>
+    <p class="dl-sub fade-in">Android available now · Windows &amp; Linux coming soon</p>
+    <div class="dl-grid">
+      <div class="dl-card fade-in">
+        <span class="dl-icon"><i class="fa-brands fa-android"></i></span>
+        <div class="dl-os">ANDROID</div>
+        <div class="dl-ver">v1.1.0 · Available Now</div>
+        <a href="https://github.com/iamovi/SwipeWaifu/releases/download/v1.1.0/SwipeWaifu-release-v1.1.0.apk"
+           class="btn btn-accent" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px;">
+          <i class="fa-solid fa-download"></i> Download APK
+        </a>
+        <p style="margin-top:0.55rem; font-size:0.72rem; color:var(--muted); font-weight:700;">
+          Enable "Install unknown apps" in Settings first
+        </p>
+      </div>
+      <div class="dl-card dim fade-in">
+        <span class="dl-icon"><i class="fa-brands fa-windows"></i></span>
+        <div class="dl-os">WINDOWS</div>
+        <div class="dl-ver">Coming Soon</div>
+        <span class="coming-tag"><i class="fa-solid fa-clock"></i> In Development</span>
+      </div>
+      <div class="dl-card dim fade-in">
+        <span class="dl-icon"><i class="fa-brands fa-linux"></i></span>
+        <div class="dl-os">LINUX</div>
+        <div class="dl-ver">Coming Soon</div>
+        <span class="coming-tag"><i class="fa-solid fa-clock"></i> In Development</span>
+      </div>
+      <div class="dl-card fade-in">
+        <span class="dl-icon"><i class="fa-solid fa-globe"></i></span>
+        <div class="dl-os">WEB</div>
+        <div class="dl-ver">Always Available · No Install</div>
+        <a href="https://iamovi.github.io/SwipeWaifu/" target="_blank"
+           class="btn btn-white" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px;">
+          <i class="fa-solid fa-rocket"></i> Open App
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTALL GUIDE -->
+<section class="section fade-in" id="install">
+  <h2 class="section-title">HOW TO INSTALL</h2>
+  <div class="install-grid">
+    <div class="callout" style="margin:0;">
+      <span class="callout-label">ANDROID APK</span>
+      <ol style="padding-left:1.1rem; line-height:2.1; margin-top:0.5rem;">
+        <li>Download the APK above</li>
+        <li>Go to <strong>Settings → Security</strong></li>
+        <li>Enable <strong>Install Unknown Sources</strong></li>
+        <li>Open the APK and tap Install</li>
+        <li>Launch and enjoy</li>
+      </ol>
+    </div>
+    <div class="callout" style="margin:0;">
+      <span class="callout-label">PWA — MOBILE</span>
+      <ol style="padding-left:1.1rem; line-height:2.1; margin-top:0.5rem;">
+        <li>Open the web app on your phone</li>
+        <li>Tap the browser menu or share icon</li>
+        <li>Select <strong>Add to Home Screen</strong></li>
+        <li>Launch it like a native app</li>
+      </ol>
+    </div>
+    <div class="callout" style="margin:0;">
+      <span class="callout-label">PWA — DESKTOP</span>
+      <ol style="padding-left:1.1rem; line-height:2.1; margin-top:0.5rem;">
+        <li>Open the app in Chrome or Edge</li>
+        <li>Click the install icon in the address bar</li>
+        <li>Click <strong>Install</strong></li>
+        <li>SwipeWaifu is now on your desktop</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SHORTCUTS -->
+<section class="section" id="shortcuts">
+  <h2 class="section-title fade-in">KEYBOARD SHORTCUTS</h2>
+  <div class="callout red-bar fade-in">
+    <span class="callout-label">PC ONLY</span>
+    Control everything without touching your mouse.
+  </div>
+  <table class="shorts-table fade-in">
+    <thead><tr><th>Key</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><kbd>→</kbd> <kbd>↓</kbd></td><td>Next waifu</td></tr>
+      <tr><td><kbd>←</kbd> <kbd>↑</kbd></td><td>Previous waifu</td></tr>
+      <tr><td><kbd>Space</kbd></td><td>Toggle favorite</td></tr>
+      <tr><td><kbd>A</kbd></td><td>Toggle auto-slide</td></tr>
+      <tr><td><kbd>M</kbd></td><td>Mute / Unmute</td></tr>
+      <tr><td><kbd>?</kbd></td><td>Show shortcuts help</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTRIBUTE -->
+<section class="section" id="contribute">
+  <h2 class="section-title fade-in">CONTRIBUTE &amp; OPEN SOURCE</h2>
+
+  <div class="oss-banner fade-in">
+    <div class="oss-icon"><i class="fa-brands fa-github"></i></div>
+    <div class="oss-text">
+      <div class="oss-title">FREE &amp; OPEN SOURCE</div>
+      <div class="oss-sub">MIT License · Fork it, remix it, ship it</div>
+    </div>
+    <a href="https://github.com/iamovi/SwipeWaifu" target="_blank" class="btn btn-accent">
+      <i class="fa-brands fa-github"></i> View on GitHub
+    </a>
+  </div>
+
+  <div class="steps-grid fade-in">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-icon"><i class="fa-solid fa-code-fork"></i></div>
+      <h3>Fork the Repo</h3>
+      <p>Click <strong>Fork</strong> on GitHub to create your own copy of the project.</p>
+      <a href="https://github.com/iamovi/SwipeWaifu/fork" target="_blank" class="step-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Fork Now
+      </a>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-icon"><i class="fa-solid fa-terminal"></i></div>
+      <h3>Clone &amp; Set Up</h3>
+      <p>Clone locally and run the dev server with Bun.</p>
+      <div class="code-block">
+        <span class="code-cmt"># clone your fork</span><br>
+        git clone https://github.com/YOU/SwipeWaifu<br>
+        cd SwipeWaifu<br><br>
+        <span class="code-cmt"># install &amp; run</span><br>
+        bun install &amp;&amp; bun dev
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+      <h3>Make Changes</h3>
+      <p>Create a new branch for your feature or fix.</p>
+      <div class="code-block">git checkout -b feature/my-feature</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-icon"><i class="fa-solid fa-code-pull-request"></i></div>
+      <h3>Open a Pull Request</h3>
+      <p>Push your branch and open a PR against <strong>main</strong>.</p>
+      <a href="https://github.com/iamovi/SwipeWaifu/pulls" target="_blank" class="step-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Open a PR
+      </a>
+    </div>
+  </div>
+
+  <h3 class="sub-title fade-in"><i class="fa-solid fa-lightbulb"></i> WAYS TO HELP</h3>
+  <div class="panel-grid fade-in">
+    <div class="panel"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-bug"></i></span>
+      <h3>Report Bugs</h3>
+      <p>Open an issue with steps to reproduce and your device info.</p>
+      <a href="https://github.com/iamovi/SwipeWaifu/issues/new" target="_blank" class="step-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> File an Issue
+      </a>
+    </div>
+    <div class="panel"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-star"></i></span>
+      <h3>Star the Project</h3>
+      <p>Starring the repo helps others discover SwipeWaifu.</p>
+      <a href="https://github.com/iamovi/SwipeWaifu" target="_blank" class="step-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Star on GitHub
+      </a>
+    </div>
+    <div class="panel"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-flask"></i></span>
+      <h3>Suggest Features</h3>
+      <p>Have an idea? Open a feature request and let's discuss it.</p>
+      <a href="https://github.com/iamovi/SwipeWaifu/issues/new" target="_blank" class="step-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Request Feature
+      </a>
+    </div>
+    <div class="panel"><div class="panel-bar"></div>
+      <span class="panel-icon"><i class="fa-solid fa-share-nodes"></i></span>
+      <h3>Spread the Word</h3>
+      <p>Share with your anime friends and communities. Every mention helps.</p>
+    </div>
+  </div>
+
+  <div class="license-box fade-in">
+    <div class="lic-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+    <div>
+      <div class="lic-title">MIT LICENSE</div>
+      <p class="lic-text">Free to use, copy, modify, merge, publish, distribute, sublicense, or sell. The only requirement is keeping the original copyright notice in all copies or substantial portions of the software.</p>
+      <a href="https://github.com/iamovi/SwipeWaifu/blob/main/LICENSE" target="_blank" class="step-link" style="margin-top:0.7rem; display:inline-flex;">
+        <i class="fa-solid fa-file-contract"></i> Read Full License
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><i class="fa-solid fa-bolt"></i> Swipe<span class="accent">Waifu</span></div>
+  <p style="font-size:0.85rem; font-weight:700; margin-top:0.2rem;">Discover anime waifu and chat with the fanbase.</p>
+  <div class="footer-links">
+    <a href="https://iamovi.github.io/SwipeWaifu/" target="_blank"><i class="fa-solid fa-globe"></i> Live App</a>
+    <a href="https://github.com/iamovi/SwipeWaifu" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+    <a href="https://github.com/iamovi/SwipeWaifu/releases" target="_blank"><i class="fa-solid fa-box-archive"></i> Releases</a>
+    <a href="https://github.com/iamovi/SwipeWaifu/blob/main/LICENSE" target="_blank"><i class="fa-solid fa-file-contract"></i> License</a>
+    <a href="https://iamovi.github.io" target="_blank"><i class="fa-solid fa-user"></i> Creator</a>
+  </div>
+  <p class="footer-copy">Created by <strong style="color:rgba(255,255,255,0.65)">Ovi ren</strong> · MIT License · 2026</p>
+</footer>
+
+<script>
+  // Fade in
+  const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+  // Mobile menu
+  const ham = document.getElementById('hamburger');
+  const mob = document.getElementById('mobileMenu');
+  const ovl = document.getElementById('mobOverlay');
+  const cls = document.getElementById('drawerX');
+
+  const open  = () => { ham.classList.add('open');    mob.classList.add('open');    document.body.style.overflow='hidden'; };
+  const close = () => { ham.classList.remove('open'); mob.classList.remove('open'); document.body.style.overflow=''; };
+
+  ham.addEventListener('click', () => mob.classList.contains('open') ? close() : open());
+  cls.addEventListener('click', close);
+  ovl.addEventListener('click', close);
+  document.querySelectorAll('.dl-link').forEach(l => l.addEventListener('click', close));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
 </body>
 </html>
