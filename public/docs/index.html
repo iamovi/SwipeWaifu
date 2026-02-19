@@ -118,6 +118,22 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 1.75rem; height: 58px;
     border-bottom: 2px solid #2a2a2a;
+    overflow: hidden; /* needed for canvas clipping */
+  }
+
+  /* Canvas stars live behind nav content */
+  #navStars {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Ensure nav children sit above the canvas */
+  nav > *:not(#navStars) {
+    position: relative;
+    z-index: 1;
   }
 
   .nav-logo {
@@ -175,6 +191,22 @@
     transform: translateX(100%);
     transition: transform 0.3s cubic-bezier(.4,0,.2,1);
     display: flex; flex-direction: column;
+    overflow: hidden; /* clip the stars canvas */
+  }
+
+  /* Stars canvas inside mobile drawer */
+  #drawerStars {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Lift all drawer children above canvas */
+  .mob-drawer > *:not(#drawerStars) {
+    position: relative;
+    z-index: 1;
   }
   .mobile-menu.open { pointer-events: all; }
   .mobile-menu.open .mob-overlay { opacity: 1; }
@@ -540,6 +572,11 @@
   .footer-links a:hover { color: white; }
   .footer-copy { font-size: 0.76rem; }
 
+  /* ── SCROLL OFFSET — compensate for sticky nav height ── */
+  #features, #download, #shortcuts, #contribute, #install {
+    scroll-margin-top: 60px;
+  }
+
   /* ── FADE IN ── */
   .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease, transform 0.4s ease; }
   .fade-in.visible { opacity: 1; transform: translateY(0); }
@@ -561,6 +598,9 @@
 
 <!-- NAV -->
 <nav>
+  <!-- Living Stars Canvas -->
+  <canvas id="navStars"></canvas>
+
   <a class="nav-logo" href="#"><img src="https://ik.imagekit.io/iamovi/SwipeWaifu/logo.png" alt="SwipeWaifu logo"> Swipe<span class="accent">Waifu</span></a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
@@ -578,9 +618,13 @@
 <div class="mobile-menu" id="mobileMenu">
   <div class="mob-overlay" id="mobOverlay"></div>
   <div class="mob-drawer">
+    <!-- Living Stars Canvas -->
+    <canvas id="drawerStars"></canvas>
+
     <div class="drawer-head">
-      <div class="drawer-logo">
+      <div class="drawer-logo" style="display:flex;align-items:center;gap:10px;">
         <img src="https://ik.imagekit.io/iamovi/SwipeWaifu/logo.png" alt="SwipeWaifu">
+        <span style="font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:3px;color:rgba(255,255,255,0.85);">MENU</span>
       </div>
     </div>
     <ul class="drawer-links">
@@ -847,13 +891,13 @@
       <div class="step-num">02</div>
       <div class="step-icon"><i class="fa-solid fa-terminal"></i></div>
       <h3>Clone &amp; Set Up</h3>
-      <p>Clone locally and run the dev server with Bun.</p>
+      <p>Clone locally and run the dev server with Bun or npm.</p>
       <div class="code-block">
         <span class="code-cmt"># clone your fork</span><br>
-        git clone https://github.com/YOU/SwipeWaifu<br>
+        git clone https://github.com/YOU/SwipeWaifu.git<br>
         cd SwipeWaifu<br><br>
         <span class="code-cmt"># install &amp; run</span><br>
-        bun install &amp;&amp; bun dev
+        bun install / npm install &amp;&amp; bun dev / npm run dev
       </div>
     </div>
     <div class="step-card">
@@ -936,11 +980,11 @@
 </footer>
 
 <script>
-  // Fade in
+  // ── FADE IN ──
   const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 });
   document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 
-  // Mobile menu
+  // ── MOBILE MENU ──
   const ham = document.getElementById('hamburger');
   const mob = document.getElementById('mobileMenu');
   const ovl = document.getElementById('mobOverlay');
@@ -952,7 +996,7 @@
   ovl.addEventListener('click', close);
   document.querySelectorAll('.dl-link').forEach(l => l.addEventListener('click', close));
 
-  // Smooth scroll
+  // ── SMOOTH SCROLL ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
@@ -960,6 +1004,302 @@
       if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
+  // ── REALISTIC STAR ENGINE ──
+  (function () {
+    'use strict';
+
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 768;
+    const rand  = (a, b) => Math.random() * (b - a) + a;
+    const clamp = (v, lo, hi) => v < lo ? lo : v > hi ? hi : v;
+    let tick = 0;
+
+    /* ──────────────────────────────────────────────────────
+       PRE-BAKE STAR SPRITES
+       Each sprite = soft radial glow (the "atmosphere" halo).
+       Drawn once per size bucket. drawImage() costs almost nothing.
+
+       Sizes: radius in px. We bake at 2x for retina clarity.
+    ────────────────────────────────────────────────────── */
+    const SIZES   = [3, 5, 8, 13, 20];   // glow radii
+    const sprites = SIZES.map(r => {
+      const sz  = r * 2;
+      const oc  = document.createElement('canvas');
+      oc.width  = oc.height = sz * 2;
+      const ox  = oc.getContext('2d');
+      // Realistic star glow: very bright core fading to transparent
+      // Uses two passes — inner hot white + outer warm tinge
+      const g = ox.createRadialGradient(sz, sz, 0, sz, sz, sz);
+      g.addColorStop(0,    'rgba(255,255,255,1)');
+      g.addColorStop(0.08, 'rgba(240,248,255,0.95)');
+      g.addColorStop(0.25, 'rgba(200,220,255,0.55)');
+      g.addColorStop(0.55, 'rgba(180,200,255,0.12)');
+      g.addColorStop(1,    'rgba(150,180,255,0)');
+      ox.fillStyle = g;
+      ox.fillRect(0, 0, sz * 2, sz * 2);
+      return { oc, r };
+    });
+
+    function pickSprite(r) {
+      let best = sprites[0], gap = Infinity;
+      for (const s of sprites) { const d = Math.abs(s.r - r); if (d < gap) { gap = d; best = s; } }
+      return best;
+    }
+
+    /* ──────────────────────────────────────────────────────
+       DRAW ONE REALISTIC STAR
+       = glow halo (sprite) + bright pinpoint core + diffraction spikes
+       Spikes only on bigger stars, same as real telescope photos.
+    ────────────────────────────────────────────────────── */
+    function drawStar(ctx, s, tick) {
+      // Layered twinkle: two sine waves at different frequencies = natural irregular flicker
+      const tw = 0.55
+        + 0.28 * Math.sin(tick * s.ts  + s.ph)
+        + 0.17 * Math.sin(tick * s.ts2 + s.ph2);
+
+      const gR    = s.glow * (0.7 + 0.5 * tw);  // glow radius
+      const alpha = clamp(s.brightness * (0.35 + 0.65 * tw), 0, 1);
+
+      // ── 1. Outer atmospheric glow (sprite) ──
+      const sp   = pickSprite(gR);
+      const dim  = sp.r * 4;        // sprite canvas side = r*4 (2*r per side * 2 for HiDPI)
+      const draw = gR / sp.r;       // scale factor
+      ctx.globalAlpha = alpha * 0.85;
+      ctx.drawImage(sp.oc,
+        s.x - sp.r * 2 * draw,
+        s.y - sp.r * 2 * draw,
+        dim * draw, dim * draw
+      );
+
+      // ── 2. Bright pinpoint core ── (tiny arc, near-white)
+      const coreR = Math.max(0.4, gR * 0.12);
+      ctx.globalAlpha = clamp(alpha + 0.1, 0, 1);
+      ctx.fillStyle   = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, coreR, 0, 6.2832);
+      ctx.fill();
+
+      // ── 3. Diffraction spikes — only on bright/large stars ──
+      // Real stars have 4-6 spikes in telescope images due to mirror struts.
+      if (s.spikes && tw > 0.5) {
+        const spikeLen = gR * (2.2 + 1.8 * tw);
+        const spikeA   = alpha * tw * 0.55;
+        ctx.globalAlpha = spikeA;
+
+        // Horizontal + vertical spike (2-axis cross = 4 spikes)
+        const grad1 = ctx.createLinearGradient(s.x - spikeLen, s.y, s.x + spikeLen, s.y);
+        grad1.addColorStop(0,   'rgba(255,255,255,0)');
+        grad1.addColorStop(0.45,'rgba(220,235,255,0.7)');
+        grad1.addColorStop(0.5, 'rgba(255,255,255,1)');
+        grad1.addColorStop(0.55,'rgba(220,235,255,0.7)');
+        grad1.addColorStop(1,   'rgba(255,255,255,0)');
+
+        const grad2 = ctx.createLinearGradient(s.x, s.y - spikeLen, s.x, s.y + spikeLen);
+        grad2.addColorStop(0,   'rgba(255,255,255,0)');
+        grad2.addColorStop(0.45,'rgba(220,235,255,0.7)');
+        grad2.addColorStop(0.5, 'rgba(255,255,255,1)');
+        grad2.addColorStop(0.55,'rgba(220,235,255,0.7)');
+        grad2.addColorStop(1,   'rgba(255,255,255,0)');
+
+        ctx.lineWidth = Math.max(0.6, gR * 0.18);
+
+        ctx.beginPath();
+        ctx.strokeStyle = grad1;
+        ctx.moveTo(s.x - spikeLen, s.y);
+        ctx.lineTo(s.x + spikeLen, s.y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = grad2;
+        ctx.moveTo(s.x, s.y - spikeLen);
+        ctx.lineTo(s.x, s.y + spikeLen);
+        ctx.stroke();
+
+        // Diagonal faint spikes (45°) for extra realism
+        if (s.diagSpikes) {
+          const dl = spikeLen * 0.6;
+          ctx.globalAlpha = spikeA * 0.4;
+          ctx.lineWidth   = Math.max(0.4, gR * 0.1);
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(200,220,255,0.8)';
+          ctx.moveTo(s.x - dl, s.y - dl); ctx.lineTo(s.x + dl, s.y + dl);
+          ctx.moveTo(s.x + dl, s.y - dl); ctx.lineTo(s.x - dl, s.y + dl);
+          ctx.stroke();
+        }
+      }
+
+      ctx.globalAlpha = 1;
+    }
+
+    /* ──────────────────────────────────────────────────────
+       STAR SYSTEM FACTORY
+    ────────────────────────────────────────────────────── */
+    function StarSystem({ canvasId, dynamicCount, countD, countM,
+                          glowMin, glowMax, maxVel, hasHover, mouseDist }) {
+
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return null;
+      const el  = canvas.parentElement;
+      const ctx = canvas.getContext('2d', { alpha: true });
+
+      let W = 0, H = 0, stars = [];
+      const mouse = { x: -9999, y: -9999 };
+
+      function resize() {
+        W = canvas.width  = el.offsetWidth  || 1;
+        H = canvas.height = el.offsetHeight || 1;
+      }
+
+      function mkStar() {
+        // Star class distribution (like real sky):
+        // ~60% tiny dim, ~30% medium, ~10% bright with spikes
+        const roll = Math.random();
+        const big  = roll > 0.9;
+        const mid  = roll > 0.6 && !big;
+        const glow = big  ? rand(glowMax * 0.65, glowMax)
+                   : mid  ? rand(glowMin * 2, glowMax * 0.6)
+                           : rand(glowMin, glowMin * 2.2);
+
+        // Natural base velocity — slow drift
+        const angle = rand(0, Math.PI * 2);
+        const speed = rand(0.01, maxVel * 0.4);
+
+        // Burst timer: random countdown until next velocity kick
+        const burstIn = Math.floor(rand(60, 400)); // frames
+
+        return {
+          x: rand(0, W), y: rand(0, H),
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          glow,
+          brightness: big ? rand(0.85, 1) : mid ? rand(0.5, 0.85) : rand(0.15, 0.55),
+          // Two-frequency twinkle for natural irregular shimmer
+          ts:  rand(0.008, isMobile ? 0.025 : 0.04),
+          ts2: rand(0.03,  isMobile ? 0.06  : 0.09),
+          ph:  rand(0, Math.PI * 2),
+          ph2: rand(0, Math.PI * 2),
+          spikes:    big,
+          diagSpikes: big && Math.random() > 0.4,
+          // Physics burst state
+          burstIn,    // frames until next burst
+          burstVx: 0, // burst velocity component
+          burstVy: 0,
+          burstDecay: 0, // how fast burst fades
+        };
+      }
+
+      function scatter() {
+        resize();
+        const n = dynamicCount
+          ? clamp(Math.round((W * H) / 2800), isMobile ? 25 : 40, isMobile ? 60 : 100)
+          : (isMobile ? countM : countD);
+        stars = Array.from({ length: n }, mkStar);
+      }
+
+      function frame() {
+        ctx.clearRect(0, 0, W, H);
+
+        for (const s of stars) {
+          // ── Burst physics: random sudden velocity kicks ──
+          s.burstIn--;
+          if (s.burstIn <= 0) {
+            // Fire a burst in a random direction at 3–8× normal speed
+            const bAngle = rand(0, Math.PI * 2);
+            const bSpeed = rand(maxVel * 2.5, maxVel * 7);
+            s.burstVx = Math.cos(bAngle) * bSpeed;
+            s.burstVy = Math.sin(bAngle) * bSpeed;
+            s.burstDecay = rand(0.88, 0.96); // how quickly burst bleeds off
+            s.burstIn = Math.floor(rand(80, 500)); // schedule next burst
+          }
+
+          // Apply + decay burst
+          s.vx += s.burstVx; s.vy += s.burstVy;
+          s.burstVx *= s.burstDecay;
+          s.burstVy *= s.burstDecay;
+
+          // Soft drag on base velocity (natural deceleration)
+          s.vx *= 0.992; s.vy *= 0.992;
+
+          // Hard cap so stars don't fly off screen instantly
+          const spd2 = s.vx * s.vx + s.vy * s.vy;
+          if (spd2 > maxVel * maxVel * 64) {
+            const inv = (maxVel * 8) / Math.sqrt(spd2);
+            s.vx *= inv; s.vy *= inv;
+          }
+
+          // Move + wrap
+          s.x += s.vx; s.y += s.vy;
+          if (s.x < -20)    s.x = W + 20;
+          if (s.x > W + 20) s.x = -20;
+          if (s.y < -20)    s.y = H + 20;
+          if (s.y > H + 20) s.y = -20;
+
+          // Mouse repel (desktop nav)
+          if (hasHover && mouse.x > -9000) {
+            const dx = s.x - mouse.x, dy = s.y - mouse.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < mouseDist * mouseDist && d2 > 1) {
+              const f = 0.3 / Math.sqrt(d2);
+              s.vx += dx * f; s.vy += dy * f;
+            }
+          }
+
+          drawStar(ctx, s, tick);
+        }
+      }
+
+      if (hasHover) {
+        el.addEventListener('mousemove', e => {
+          const r = el.getBoundingClientRect();
+          mouse.x = e.clientX - r.left;
+          mouse.y = e.clientY - r.top;
+        }, { passive: true });
+        el.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+      }
+
+      window.addEventListener('resize', scatter, { passive: true });
+      scatter();
+      return { frame, scatter };
+    }
+
+    /* ── Instantiate ── */
+    const navSystem = StarSystem({
+      canvasId: 'navStars',
+      dynamicCount: false,
+      countD: 50, countM: 28,
+      glowMin: 1.5, glowMax: 9,
+      maxVel: 0.18,
+      hasHover: true, mouseDist: 90,
+    });
+
+    const drawerSystem = StarSystem({
+      canvasId: 'drawerStars',
+      dynamicCount: true,
+      countD: 0, countM: 0,
+      glowMin: 2, glowMax: 11,
+      maxVel: 0.15,
+      hasHover: false, mouseDist: 0,
+    });
+
+    // Rescatter drawer on open (real dimensions available after transition)
+    const menuEl = document.getElementById('mobileMenu');
+    new MutationObserver(() => {
+      if (menuEl.classList.contains('open') && drawerSystem) {
+        setTimeout(() => drawerSystem.scatter(), 60);
+      }
+    }).observe(menuEl, { attributes: true, attributeFilter: ['class'] });
+
+    /* ── Single shared RAF loop ── */
+    const isDrawerOpen = () => menuEl.classList.contains('open');
+
+    function loop() {
+      requestAnimationFrame(loop);
+      tick++;
+      if (navSystem) navSystem.frame();
+      if (drawerSystem && isDrawerOpen()) drawerSystem.frame();
+    }
+    loop();
+  })();
 </script>
 </body>
 </html>
