@@ -43,15 +43,204 @@
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
+  /* ══════════════════════════════════════════
+     LIGHT MODE (default) — nav/footer/download are dark accent blocks
+  ══════════════════════════════════════════ */
   :root {
     --ink:    #111111;
     --white:  #fafaf8;
     --paper:  #f5f3ee;
     --mid:    #e8e5de;
-    --muted:  #888;
+    --muted:  #777777;
     --accent: #d63080;
-    --border: 2px solid #111;
-    --shadow: 4px 4px 0 #111;
+    --border: 2px solid #111111;
+    --shadow: 4px 4px 0 #111111;
+
+    --grid-strong: rgba(0,0,0,0.06);
+    --grid-faint:  rgba(0,0,0,0.025);
+    --margin-line: rgba(180,40,40,0.2);
+
+    /* NAV — light: white bar, dark ink text */
+    --nav-bg:            #ffffff;
+    --nav-border:        #dddddd;
+    --nav-link-color:    #444444;
+    --nav-link-hover:    #111111;
+    --nav-link-hbg:      rgba(0,0,0,0.06);
+    --ham-line:          #111111;
+    --ham-border:        #cccccc;
+
+    /* DRAWER — light: white panel */
+    --drawer-bg:          #ffffff;
+    --drawer-border:      #dddddd;
+    --drawer-item-border: #eeeeee;
+    --drawer-link-color:  #333333;
+    --drawer-icon-color:  #bbbbbb;
+    --drawer-hover-bg:    #f5f3ee;
+    --drawer-hover-text:  #111111;
+    --drawer-menu-label:  #333333;
+
+    /* CONTENT PANELS */
+    --panel-bg:    #fafaf8;
+    --panel-text:  #444444;
+    --callout-bg:  #fafaf8;
+    --table-bg:    #fafaf8;
+    --table-td:    #333333;
+    --table-hover: #f5f3ee;
+    --kbd-shadow:  #999999;
+
+    /* DOWNLOAD STRIP — always dark accent */
+    --dl-wrap-bg:     #f5f3ee;
+    --dl-title-col:   #111111;
+    --dl-sub-col:     #555555;
+    --dl-card-bg:     #ffffff;
+    --dl-card-border: #dddddd;
+    --dl-card-hover:  #aaaaaa;
+    --dl-icon-col:    #555555;
+    --dl-os-col:      #111111;
+    --dl-ver-col:     #666666;
+    --coming-bg:      #eeeeee;
+    --coming-col:     #666666;
+    --coming-border:  #cccccc;
+
+    /* OSS BANNER — always dark accent */
+    --oss-bg:    #f5f3ee;
+    --oss-title: #111111;
+    --oss-sub:   #555555;
+    --oss-icon:  #111111;
+
+    /* CODE BLOCKS */
+    --code-bg:  #1a1a1a;
+    --code-col: #aee8ae;
+    --code-cmt: #555555;
+
+    /* FOOTER — always dark accent */
+    --footer-bg:     #e8e5de;
+    --footer-text:   #444444;
+    --footer-link:   #555555;
+    --footer-border: #d0cdc6;
+    --footer-hover:  #111111;
+
+    /* MARQUEE STRIP — always dark accent */
+    --marquee-bg:     #111111;
+    --marquee-border: #222222;
+    --marquee-text:   rgba(255,255,255,0.6);
+
+    --step-num: rgba(0,0,0,0.045);
+
+    --scrollbar-track: #f5f3ee;
+    --scrollbar-thumb: #111111;
+
+    --toggle-bg:     rgba(0,0,0,0.07);
+    --toggle-border: #cccccc;
+    --toggle-color:  #555555;
+    --toggle-hover:  rgba(0,0,0,0.12);
+    --nav-logo-color: #111111;
+    --hero-overlay:   rgba(0,0,0,0.58);
+    --btn-white-bg:   #111111;
+    --btn-white-text: #fafaf8;
+    --btn-white-border: #111111;
+  }
+
+  /* ══════════════════════════════════════════
+     DARK MODE
+  ══════════════════════════════════════════ */
+  html.dark {
+    --ink:    #e8e6e1;
+    --white:  #1e1e1e;
+    --paper:  #141414;
+    --mid:    #2a2a2a;
+    --muted:  #666666;
+    --accent: #e0508f;
+    --border: 2px solid #e8e6e1;
+    --shadow: 4px 4px 0 #e8e6e1;
+
+    --grid-strong: rgba(255,255,255,0.04);
+    --grid-faint:  rgba(255,255,255,0.015);
+    --margin-line: rgba(220,80,140,0.18);
+
+    /* NAV — dark: very dark bar */
+    --nav-bg:            #0d0d0d;
+    --nav-border:        #1e1e1e;
+    --nav-link-color:    rgba(255,255,255,0.55);
+    --nav-link-hover:    #ffffff;
+    --nav-link-hbg:      rgba(255,255,255,0.08);
+    --ham-line:          #e8e6e1;
+    --ham-border:        #333333;
+
+    /* DRAWER — dark */
+    --drawer-bg:          #0d0d0d;
+    --drawer-border:      #1e1e1e;
+    --drawer-item-border: #161616;
+    --drawer-link-color:  rgba(255,255,255,0.6);
+    --drawer-icon-color:  #444444;
+    --drawer-hover-bg:    #1a1a1a;
+    --drawer-hover-text:  #ffffff;
+    --drawer-menu-label:  rgba(255,255,255,0.7);
+
+    /* CONTENT PANELS */
+    --panel-bg:    #1e1e1e;
+    --panel-text:  #aaaaaa;
+    --callout-bg:  #1e1e1e;
+    --table-bg:    #1e1e1e;
+    --table-td:    #cccccc;
+    --table-hover: #252525;
+    --kbd-shadow:  #000000;
+
+    /* DOWNLOAD STRIP */
+    --dl-wrap-bg:     #0a0a0a;
+    --dl-title-col:   #e8e6e1;
+    --dl-sub-col:     #666666;
+    --dl-card-bg:     #181818;
+    --dl-card-border: #2a2a2a;
+    --dl-card-hover:  #aaaaaa;
+    --dl-icon-col:    rgba(255,255,255,0.7);
+    --dl-os-col:      #e8e6e1;
+    --dl-ver-col:     #666666;
+    --coming-bg:      #1a1a1a;
+    --coming-col:     #555555;
+    --coming-border:  #2a2a2a;
+
+    /* OSS BANNER */
+    --oss-bg:    #0a0a0a;
+    --oss-title: #e8e6e1;
+    --oss-sub:   #666666;
+    --oss-icon:  #e8e6e1;
+
+    /* CODE BLOCKS */
+    --code-bg:  #0d0d0d;
+    --code-col: #aee8ae;
+    --code-cmt: #444444;
+
+    /* FOOTER */
+    --footer-bg:     #0a0a0a;
+    --footer-text:   rgba(255,255,255,0.4);
+    --footer-link:   rgba(255,255,255,0.35);
+    --footer-border: #1a1a1a;
+    --footer-hover:  #111111;
+
+    /* MARQUEE STRIP */
+    --marquee-bg:     #0d0d0d;
+    --marquee-border: #1a1a1a;
+    --marquee-text:   rgba(255,255,255,0.4);
+
+    --step-num: rgba(255,255,255,0.04);
+
+    --scrollbar-track: #141414;
+    --scrollbar-thumb: #e8e6e1;
+
+    --toggle-bg:     rgba(255,255,255,0.08);
+    --toggle-border: rgba(255,255,255,0.18);
+    --toggle-color:  rgba(255,255,255,0.75);
+    --toggle-hover:  rgba(255,255,255,0.15);
+    --nav-logo-color: #f0ede8;
+    --hero-overlay:   rgba(0,0,0,0.45);
+    --btn-white-bg:   #fafaf8;
+    --btn-white-text: #111111;
+    --btn-white-border: #e8e6e1;
+  }
+
+  html {
+    transition: background-color 0.3s ease;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -59,35 +248,35 @@
   /* ── CUSTOM SCROLLBAR ── */
   ::-webkit-scrollbar { width: 12px; }
   ::-webkit-scrollbar-track {
-    background: var(--paper);
+    background: var(--scrollbar-track);
     background-image:
-      linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+      linear-gradient(var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px);
     background-size: 8px 8px;
-    border-left: 2px solid var(--ink);
+    border-left: 2px solid var(--scrollbar-thumb);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--ink);
-    border: 2px solid var(--paper);
+    background: var(--scrollbar-thumb);
+    border: 2px solid var(--scrollbar-track);
     border-radius: 2px;
-    box-shadow: inset 2px 0 0 #333, inset -1px 0 0 #555;
   }
-  ::-webkit-scrollbar-thumb:hover { background: #2a2a2a; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
   ::-webkit-scrollbar-thumb:active { background: var(--accent); }
-  ::-webkit-scrollbar-corner { background: var(--paper); }
-  * { scrollbar-width: thin; scrollbar-color: var(--ink) var(--paper); }
+  ::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
+  * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
 
   body {
     background-color: var(--paper);
     background-image:
-      linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px),
-      linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+      linear-gradient(var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(var(--grid-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-faint) 1px, transparent 1px);
     background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
     font-family: 'Comic Neue', cursive;
     color: var(--ink);
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   body::before {
@@ -95,7 +284,7 @@
     position: fixed;
     top: 0; left: 68px;
     width: 2px; height: 100%;
-    background: rgba(180,40,40,0.25);
+    background: var(--margin-line);
     pointer-events: none;
     z-index: 0;
   }
@@ -103,11 +292,19 @@
   /* ── NAV ── */
   nav {
     position: sticky; top: 0; z-index: 200;
-    background: var(--ink);
+    background-color: var(--nav-bg);
+    background-image:
+      linear-gradient(var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(var(--grid-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-faint) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 1.75rem; height: 58px;
-    border-bottom: 2px solid #2a2a2a;
+    border-bottom: 2px solid var(--nav-border);
     overflow: hidden;
+    clip-path: inset(0 0 0 0);
+    transition: background-color 0.3s, border-color 0.3s;
   }
 
   #navPetals {
@@ -119,32 +316,58 @@
     overflow: hidden;
   }
 
-  /* ── EMOJI FLOWER PARTICLES ── */
-  .flower-particle {
+  /* ── SAKURA PETAL PARTICLES ── */
+  .petal {
     position: absolute;
     pointer-events: none;
-    line-height: 1;
     user-select: none;
     will-change: transform, opacity;
-    animation: petalFall linear infinite;
     transform-origin: center center;
   }
 
-  @keyframes petalFall {
-    0% {
-      transform: translateY(-20px) rotate(0deg) scale(var(--scale));
-      opacity: 0;
-    }
-    6% {
-      opacity: var(--max-opacity);
-    }
-    99% {
-      opacity: var(--max-opacity);
-    }
-    100% {
-      transform: translateY(var(--fall-dist)) rotate(var(--spin)) scale(var(--scale));
-      opacity: var(--max-opacity);
-    }
+  /* Layer 1 – far (small, slow, low opacity) */
+  .petal.layer-far {
+    animation: petalFallFar var(--dur) var(--delay) linear infinite;
+  }
+  /* Layer 2 – mid */
+  .petal.layer-mid {
+    animation: petalFallMid var(--dur) var(--delay) linear infinite;
+  }
+  /* Layer 3 – near (large, fast, high opacity) */
+  .petal.layer-near {
+    animation: petalFallNear var(--dur) var(--delay) linear infinite;
+  }
+
+  @keyframes petalFallFar {
+    0%   { transform: translate(0px,   -16px) rotate(0deg)           scale(var(--sc)); opacity: 0; }
+    5%   { opacity: var(--op); }
+    45%  { transform: translate(var(--wx1), calc(var(--dist)*0.45)) rotate(calc(var(--spin)*0.45)) scale(var(--sc)); opacity: var(--op); }
+    90%  { opacity: var(--op); }
+    100% { transform: translate(var(--wx2), var(--dist)) rotate(var(--spin)) scale(var(--sc)); opacity: 0; }
+  }
+  @keyframes petalFallMid {
+    0%   { transform: translate(0px,   -16px) rotate(0deg)            scale(var(--sc)); opacity: 0; }
+    4%   { opacity: var(--op); }
+    50%  { transform: translate(var(--wx1), calc(var(--dist)*0.5))  rotate(calc(var(--spin)*0.5))  scale(var(--sc)); opacity: var(--op); }
+    92%  { opacity: var(--op); }
+    100% { transform: translate(var(--wx2), var(--dist)) rotate(var(--spin)) scale(var(--sc)); opacity: 0; }
+  }
+  @keyframes petalFallNear {
+    0%   { transform: translate(0px,   -20px) rotate(0deg)            scale(var(--sc)); opacity: 0; }
+    3%   { opacity: var(--op); }
+    55%  { transform: translate(var(--wx1), calc(var(--dist)*0.55)) rotate(calc(var(--spin)*0.55)) scale(var(--sc)); opacity: var(--op); }
+    94%  { opacity: var(--op); }
+    100% { transform: translate(var(--wx2), var(--dist)) rotate(var(--spin)) scale(var(--sc)); opacity: 0; }
+  }
+
+  /* Tumble sub-animation (CSS only wobble on top of fall) */
+  .petal svg {
+    animation: petalWobble var(--wob) ease-in-out infinite alternate;
+    transform-origin: center;
+  }
+  @keyframes petalWobble {
+    from { transform: rotateX(0deg)  rotateY(0deg); }
+    to   { transform: rotateX(60deg) rotateY(40deg); }
   }
 
   nav > *:not(#navPetals) {
@@ -155,7 +378,7 @@
   .nav-logo {
     font-family: 'Bangers', cursive;
     font-size: 1.7rem; letter-spacing: 2px;
-    color: var(--white); text-decoration: none;
+    color: var(--nav-logo-color); text-decoration: none;
     display: flex; align-items: center; gap: 8px;
   }
   .nav-logo img { height: 32px; width: auto; display: block; }
@@ -165,22 +388,35 @@
   .nav-links a {
     font-family: 'Bangers', cursive;
     font-size: 1rem; letter-spacing: 1px;
-    color: rgba(255,255,255,0.6); text-decoration: none;
+    color: var(--nav-link-color); text-decoration: none;
     padding: 5px 11px; border-radius: 4px;
     transition: background 0.15s, color 0.15s;
   }
-  .nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .nav-links a:hover { background: var(--nav-link-hbg); color: var(--nav-link-hover); }
+
+  /* ── THEME TOGGLE ── */
+  .theme-toggle {
+    display: flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px;
+    background: var(--toggle-bg);
+    border: 1px solid var(--toggle-border);
+    border-radius: 4px; cursor: pointer;
+    color: var(--toggle-color); font-size: 1rem;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { background: var(--toggle-hover); color: var(--nav-link-hover); }
 
   /* ── HAMBURGER ── */
   .hamburger {
     display: none; flex-direction: column;
     justify-content: center; gap: 5px;
     width: 36px; height: 36px;
-    background: none; border: 1px solid #444;
+    background: none; border: 1px solid var(--ham-border);
     border-radius: 4px; cursor: pointer; padding: 7px;
   }
   .hamburger span {
-    display: block; height: 2px; background: var(--white);
+    display: block; height: 2px; background: var(--ham-line);
     border-radius: 2px; transition: transform 0.25s, opacity 0.25s;
     transform-origin: center;
   }
@@ -202,7 +438,7 @@
   .mob-drawer {
     position: absolute; top: 0; right: 0;
     width: min(275px, 82vw); height: 100%;
-    background: var(--ink); border-left: 2px solid #2a2a2a;
+    background: var(--drawer-bg); border-left: 2px solid var(--drawer-border);
     transform: translateX(100%);
     transition: transform 0.3s cubic-bezier(.4,0,.2,1);
     display: flex; flex-direction: column;
@@ -228,35 +464,36 @@
 
   .drawer-head {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 1.25rem; border-bottom: 1px solid #2a2a2a;
+    padding: 1rem 1.25rem; border-bottom: 1px solid var(--drawer-border);
   }
   .drawer-logo img { height: 28px; width: auto; object-fit: contain; }
   .drawer-x {
-    background: none; border: 1px solid #444; color: rgba(255,255,255,0.5);
+    background: none; border: 1px solid var(--drawer-icon-color); color: var(--drawer-link-color);
     width: 28px; height: 28px; border-radius: 4px;
     cursor: pointer; font-size: 0.8rem;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.15s;
   }
-  .drawer-x:hover { background: #333; color: white; }
+  .drawer-x:hover { background: var(--drawer-hover-bg); color: white; }
 
   .drawer-links { list-style: none; padding: 0.5rem 0; flex: 1; }
-  .drawer-links li { border-bottom: 1px solid #1e1e1e; }
+  .drawer-links li { border-bottom: 1px solid var(--drawer-item-border); }
   .drawer-links li:last-child { border: none; }
   .drawer-links a {
     display: flex; align-items: center; gap: 10px;
     padding: 0.85rem 1.25rem;
     font-family: 'Bangers', cursive;
     font-size: 1.15rem; letter-spacing: 1.5px;
-    color: rgba(255,255,255,0.65); text-decoration: none;
+    color: var(--drawer-link-color); text-decoration: none;
     transition: background 0.15s, color 0.15s;
   }
-  .drawer-links a i { width: 16px; text-align: center; font-size: 0.9rem; color: #555; }
-  .drawer-links a:hover { background: #1a1a1a; color: white; }
+  .drawer-links a i { width: 16px; text-align: center; font-size: 0.9rem; color: var(--drawer-icon-color); }
+  .drawer-links a:hover { background: var(--drawer-hover-bg); color: var(--drawer-hover-text); }
   .drawer-links a:hover i { color: var(--accent); }
 
   .drawer-foot {
-    padding: 1rem 1.25rem; border-top: 1px solid #2a2a2a;
+    padding: 1rem 1.25rem; border-top: 1px solid var(--drawer-border);
+    transition: border-color 0.3s;
   }
   .drawer-foot a {
     display: flex; align-items: center; justify-content: center; gap: 7px;
@@ -277,7 +514,8 @@
     background-size: cover; background-position: center;
   }
   .hero-overlay {
-    position: absolute; inset: 0; background: rgba(0,0,0,0.62);
+    position: absolute; inset: 0; background: var(--hero-overlay);
+    transition: background 0.3s;
   }
   .hero-content {
     position: relative; z-index: 2;
@@ -294,8 +532,8 @@
     font-family: 'Bangers', cursive;
     font-size: clamp(4rem, 11vw, 8.5rem);
     letter-spacing: 3px; line-height: 0.88;
-    color: var(--white);
-    text-shadow: 4px 4px 0 rgba(0,0,0,0.55);
+    color: #ffffff;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.5);
     margin-bottom: 0.55rem;
     animation: drop-in 0.5s cubic-bezier(.36,.07,.19,.97) both;
   }
@@ -306,17 +544,43 @@
   .hero-sub {
     font-family: 'Bangers', cursive;
     font-size: clamp(1rem, 2.5vw, 1.4rem); letter-spacing: 4px;
-    color: rgba(255,255,255,0.45); margin-bottom: 1.5rem;
+    color: rgba(255,255,255,0.75); margin-bottom: 1.5rem; text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
   }
   .hero-desc {
     font-size: 0.97rem; font-weight: 700;
-    color: rgba(255,255,255,0.75);
+    color: rgba(255,255,255,0.92);
     max-width: 500px; margin: 0 auto 1.75rem;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
     line-height: 1.65;
   }
   .hero-btns {
     display: flex; gap: 0.65rem; justify-content: center; flex-wrap: wrap;
   }
+
+  /* ── HERO BUTTON OVERRIDES (always on dark overlay) ── */
+  .hero-btns .btn {
+    border-color: rgba(255,255,255,0.5);
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+  }
+  .hero-btns .btn:hover  { box-shadow: 5px 5px 0 rgba(0,0,0,0.6); }
+  .hero-btns .btn:active { box-shadow: 1px 1px 0 rgba(0,0,0,0.4); }
+  .hero-btns .btn-white {
+    background: rgba(255,255,255,0.95);
+    color: #111111;
+    border-color: rgba(255,255,255,0.9);
+  }
+  .hero-btns .btn-dark {
+    background: rgba(255,255,255,0.12);
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.55);
+    backdrop-filter: blur(6px);
+  }
+  .hero-btns .btn-dark:hover { background: rgba(255,255,255,0.22); }
+  .hero-btns .btn-accent {
+    border-color: #a0205e;
+    box-shadow: 3px 3px 0 #7a1548;
+  }
+  .hero-btns .btn-accent:hover { box-shadow: 5px 5px 0 #7a1548; }
 
   /* ── BUTTONS ── */
   .btn {
@@ -331,23 +595,30 @@
   .btn:hover  { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
   .btn:active { transform: translate(1px,1px);   box-shadow: 2px 2px 0 var(--ink); }
 
-  .btn-white  { background: var(--white); color: var(--ink); }
+  .btn-white  { background: var(--btn-white-bg); color: var(--btn-white-text); border-color: var(--btn-white-border); }
   .btn-dark   { background: rgba(255,255,255,0.15); color: var(--white); border-color: rgba(255,255,255,0.7); box-shadow: 4px 4px 0 rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
   .btn-accent { background: var(--accent); color: white; border-color: #a0205e; box-shadow: 4px 4px 0 #7a1548; }
   .btn-accent:hover { box-shadow: 6px 6px 0 #7a1548; }
 
   /* ── MARQUEE ── */
   .marquee-strip {
-    background: var(--ink);
+    background-color: var(--marquee-bg);
+    background-image:
+      linear-gradient(var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(var(--grid-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-faint) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
     overflow: hidden; padding: 9px 0; white-space: nowrap;
-    border-top: 1px solid #222; border-bottom: 1px solid #222;
+    border-top: 1px solid var(--marquee-border); border-bottom: 1px solid var(--marquee-border);
     position: relative; z-index: 2;
+    transition: background-color 0.3s;
   }
   .marquee-inner {
     display: inline-flex; gap: 2.5rem;
     animation: marquee 24s linear infinite;
     font-family: 'Bangers', cursive; font-size: 0.95rem;
-    letter-spacing: 2px; color: rgba(255,255,255,0.45);
+    letter-spacing: 2px; color: var(--marquee-text);
   }
   .marquee-inner i { color: var(--accent); margin-right: 5px; }
   @keyframes marquee {
@@ -378,10 +649,10 @@
     gap: 1.1rem;
   }
   .panel {
-    background: var(--white); border: var(--border);
+    background: var(--panel-bg); border: var(--border);
     border-radius: 5px; padding: 1.3rem;
     box-shadow: var(--shadow); position: relative;
-    transition: transform 0.12s, box-shadow 0.12s;
+    transition: transform 0.12s, box-shadow 0.12s, background 0.3s;
   }
   .panel:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
   .panel-bar {
@@ -391,19 +662,20 @@
   }
   .panel-icon { font-size: 1.35rem; color: var(--ink); margin-bottom: 0.55rem; display: block; }
   .panel h3 { font-family: 'Bangers', cursive; font-size: 1.15rem; letter-spacing: 1px; margin-bottom: 0.35rem; }
-  .panel p  { font-size: 0.88rem; font-weight: 700; color: #444; line-height: 1.6; }
+  .panel p  { font-size: 0.88rem; font-weight: 700; color: var(--panel-text); line-height: 1.6; }
 
   /* ── CALLOUT ── */
   .callout {
-    background: var(--white); border: var(--border);
+    background: var(--callout-bg); border: var(--border);
     border-radius: 6px; padding: 1.1rem 1.4rem;
     box-shadow: var(--shadow); position: relative;
     margin: 1.4rem 0; font-size: 0.95rem;
     font-weight: 700; line-height: 1.6;
+    transition: background 0.3s;
   }
   .callout-label {
     position: absolute; top: -11px; left: 14px;
-    background: var(--ink); color: var(--white);
+    background: var(--ink); color: var(--paper);
     font-family: 'Bangers', cursive; font-size: 0.75rem;
     letter-spacing: 2px; padding: 1px 10px; border-radius: 99px;
   }
@@ -423,17 +695,25 @@
 
   /* ── DOWNLOAD SECTION ── */
   .dl-wrap {
-    background: var(--ink); padding: 3.25rem 2rem;
+    background-color: var(--dl-wrap-bg);
+    background-image:
+      linear-gradient(var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(var(--grid-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-faint) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    padding: 3.25rem 2rem;
     position: relative; z-index: 2;
+    transition: background-color 0.3s;
   }
   .dl-inner { max-width: 1020px; margin: 0 auto; }
   .dl-title {
     font-family: 'Bangers', cursive;
     font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 3px;
-    color: var(--white); text-align: center; margin-bottom: 0.25rem;
+    color: var(--dl-title-col); text-align: center; margin-bottom: 0.25rem;
   }
   .dl-sub {
-    text-align: center; color: var(--muted);
+    text-align: center; color: var(--dl-sub-col);
     font-size: 0.9rem; font-weight: 700; margin-bottom: 2.25rem;
   }
   .dl-grid {
@@ -442,20 +722,20 @@
     gap: 1.1rem;
   }
   .dl-card {
-    background: #181818; border: 1px solid #2e2e2e;
+    background: var(--dl-card-bg); border: 1px solid var(--dl-card-border);
     border-radius: 6px; padding: 1.6rem 1.1rem;
     text-align: center; transition: border-color 0.15s, transform 0.12s;
   }
-  .dl-card:hover { border-color: #555; transform: translateY(-2px); }
+  .dl-card:hover { border-color: var(--dl-card-hover); transform: translateY(-2px); }
   .dl-card.dim { opacity: 0.45; }
-  .dl-icon { font-size: 2.6rem; color: rgba(255,255,255,0.75); margin-bottom: 0.7rem; display: block; }
-  .dl-os { font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; color: var(--white); margin-bottom: 0.18rem; }
-  .dl-ver { font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 1rem; }
+  .dl-icon { font-size: 2.6rem; color: var(--dl-icon-col); margin-bottom: 0.7rem; display: block; }
+  .dl-os { font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; color: var(--dl-os-col); margin-bottom: 0.18rem; }
+  .dl-ver { font-size: 0.75rem; font-weight: 700; color: var(--dl-ver-col); margin-bottom: 1rem; }
   .coming-tag {
-    display: inline-block; background: #222; color: #666;
+    display: inline-block; background: var(--coming-bg); color: var(--coming-col);
     font-family: 'Bangers', cursive; font-size: 0.82rem;
     letter-spacing: 2px; padding: 4px 12px;
-    border-radius: 99px; border: 1px solid #333;
+    border-radius: 99px; border: 1px solid var(--coming-border);
   }
 
   /* ── INSTALL GUIDE ── */
@@ -466,68 +746,77 @@
   /* ── SHORTCUTS TABLE ── */
   .shorts-table {
     width: 100%; border-collapse: collapse;
-    background: var(--white); border: var(--border);
+    background: var(--table-bg); border: var(--border);
     border-radius: 5px; overflow: hidden; box-shadow: var(--shadow);
+    transition: background 0.3s;
   }
   .shorts-table th {
-    background: var(--ink); color: var(--white);
+    background: var(--ink); color: var(--paper);
     font-family: 'Bangers', cursive; font-size: 0.95rem; letter-spacing: 2px;
-    padding: 9px 16px; text-align: left; border-bottom: 2px solid #333;
+    padding: 9px 16px; text-align: left; border-bottom: 2px solid var(--nav-border);
   }
   .shorts-table td {
     padding: 9px 16px; border-bottom: 1px solid var(--mid);
-    font-weight: 700; font-size: 0.88rem; color: #333;
+    font-weight: 700; font-size: 0.88rem; color: var(--table-td);
   }
   .shorts-table tr:last-child td { border-bottom: none; }
-  .shorts-table tr:hover td { background: var(--paper); }
+  .shorts-table tr:hover td { background: var(--table-hover); }
   kbd {
-    display: inline-block; background: var(--ink); color: var(--white);
+    display: inline-block; background: var(--ink); color: var(--paper);
     font-family: 'Bangers', cursive; font-size: 0.82rem; letter-spacing: 1px;
     padding: 1px 7px; border-radius: 3px; margin: 1px;
-    box-shadow: 2px 2px 0 #444;
+    box-shadow: 2px 2px 0 var(--kbd-shadow);
   }
 
   /* ── CONTRIBUTE ── */
   .oss-banner {
     display: flex; align-items: center; gap: 1.2rem;
-    background: var(--ink); border: var(--border);
+    background-color: var(--oss-bg);
+    background-image:
+      linear-gradient(var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(var(--grid-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-faint) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    border: var(--border);
     border-radius: 5px; padding: 1.4rem 1.75rem;
     box-shadow: var(--shadow); margin-bottom: 2.25rem; flex-wrap: wrap;
+    transition: background-color 0.3s;
   }
-  .oss-icon { font-size: 2.2rem; color: var(--white); flex-shrink: 0; }
+  .oss-icon { font-size: 2.2rem; color: var(--oss-icon); flex-shrink: 0; }
   .oss-text { flex: 1; min-width: 160px; }
   .oss-title {
     font-family: 'Bangers', cursive; font-size: 1.45rem;
-    letter-spacing: 2px; color: var(--white); line-height: 1;
+    letter-spacing: 2px; color: var(--oss-title); line-height: 1;
   }
-  .oss-sub { color: var(--muted); font-size: 0.84rem; font-weight: 700; margin-top: 3px; }
+  .oss-sub { color: var(--oss-sub); font-size: 0.84rem; font-weight: 700; margin-top: 3px; }
 
   .steps-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
     gap: 1.1rem; margin-bottom: 2.25rem;
   }
   .step-card {
-    background: var(--white); border: var(--border);
+    background: var(--panel-bg); border: var(--border);
     border-radius: 5px; padding: 1.3rem;
     box-shadow: var(--shadow); position: relative; overflow: hidden;
-    transition: transform 0.12s, box-shadow 0.12s;
+    transition: transform 0.12s, box-shadow 0.12s, background 0.3s;
   }
   .step-card:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
   .step-num {
     position: absolute; top: -6px; right: 8px;
     font-family: 'Bangers', cursive; font-size: 4rem;
-    color: rgba(0,0,0,0.045); line-height: 1; pointer-events: none;
+    color: var(--step-num); line-height: 1; pointer-events: none;
   }
   .step-icon { font-size: 1.2rem; color: var(--accent); margin-bottom: 0.5rem; }
   .step-card h3 { font-family: 'Bangers', cursive; font-size: 1.15rem; letter-spacing: 1px; margin-bottom: 0.35rem; }
-  .step-card p  { font-size: 0.87rem; font-weight: 700; color: #444; line-height: 1.6; }
+  .step-card p  { font-size: 0.87rem; font-weight: 700; color: var(--panel-text); line-height: 1.6; }
   .code-block {
-    background: #1a1a1a; color: #aee8ae;
+    background: var(--code-bg); color: var(--code-col);
     font-family: 'Courier New', monospace; font-size: 0.73rem;
     padding: 0.55rem 0.85rem; border-radius: 3px; margin-top: 0.65rem;
     line-height: 1.7; overflow-x: auto;
   }
-  .code-cmt { color: #555; }
+  .code-cmt { color: var(--code-cmt); }
 
   .step-link {
     display: inline-flex; align-items: center; gap: 5px;
@@ -546,19 +835,28 @@
 
   .license-box {
     display: flex; gap: 1.2rem; align-items: flex-start;
-    background: var(--white); border: var(--border);
+    background: var(--panel-bg); border: var(--border);
     border-left: 4px solid var(--accent); border-radius: 5px;
     padding: 1.4rem; box-shadow: var(--shadow); margin-top: 1.75rem;
+    transition: background 0.3s;
   }
   .lic-icon { font-size: 1.8rem; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
   .lic-title { font-family: 'Bangers', cursive; font-size: 1.3rem; letter-spacing: 2px; margin-bottom: 0.35rem; }
-  .lic-text  { font-size: 0.87rem; font-weight: 700; color: #444; line-height: 1.65; max-width: 580px; }
+  .lic-text  { font-size: 0.87rem; font-weight: 700; color: var(--panel-text); line-height: 1.65; max-width: 580px; }
 
   /* ── FOOTER ── */
   footer {
-    background: var(--ink); color: rgba(255,255,255,0.45);
+    background-color: var(--footer-bg);
+    background-image:
+      linear-gradient(var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(var(--grid-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-faint) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    color: var(--footer-text);
     text-align: center; padding: 2.25rem 2rem;
-    position: relative; z-index: 2; border-top: 2px solid #1e1e1e;
+    position: relative; z-index: 2; border-top: 2px solid var(--footer-border);
+    transition: background-color 0.3s;
   }
   .footer-logo {
     display: flex; align-items: center; justify-content: center;
@@ -570,16 +868,16 @@
     margin: 1rem 0; flex-wrap: wrap;
   }
   .footer-links a {
-    color: rgba(255,255,255,0.4); text-decoration: none;
+    color: var(--footer-link); text-decoration: none;
     font-size: 0.85rem; font-weight: 700;
     display: flex; align-items: center; gap: 5px;
     transition: color 0.15s;
   }
-  .footer-links a:hover { color: white; }
+  .footer-links a:hover { color: var(--footer-hover); }
   .footer-copy { font-size: 0.76rem; }
 
   /* ── SCROLL OFFSET ── */
-  #features, #download, #shortcuts, #contribute, #install {
+  #features, #download, #shortcuts, #contribute, #install, #about {
     scroll-margin-top: 60px;
   }
 
@@ -598,6 +896,234 @@
     .license-box { flex-direction: column; }
     body::before { display: none; }
   }
+
+  /* ── WAIFU OF THE MOMENT ── */
+  .wotm-wrap {
+    position: relative; z-index: 2;
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+      linear-gradient(var(--grid-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-faint) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    padding: 2.5rem 2rem;
+    border-bottom: 2px solid var(--mid);
+  }
+  .wotm-inner {
+    max-width: 1020px; margin: 0 auto;
+    display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
+  }
+  .wotm-card {
+    background: var(--panel-bg);
+    border: var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    flex-shrink: 0;
+    width: 220px;
+    transition: transform 0.12s, box-shadow 0.12s;
+    position: relative;
+  }
+  .wotm-card:hover { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--ink); }
+  .wotm-img-wrap {
+    width: 100%; height: 280px;
+    background: var(--mid);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .wotm-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.4s ease;
+  }
+  .wotm-img-wrap img.loading { opacity: 0; }
+  .wotm-skeleton {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--mid) 25%, var(--paper) 50%, var(--mid) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+  }
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .wotm-card-foot {
+    padding: 0.75rem 1rem 0.9rem;
+    border-top: var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  }
+  .wotm-cat {
+    font-family: 'Bangers', cursive;
+    font-size: 0.85rem; letter-spacing: 1.5px;
+    color: var(--accent);
+  }
+  .wotm-refresh {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 1rem;
+    padding: 2px 4px; border-radius: 3px;
+    transition: color 0.15s, transform 0.3s;
+    line-height: 1;
+  }
+  .wotm-refresh:hover { color: var(--accent); }
+  .wotm-refresh.spinning { animation: spin 0.6s linear; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .wotm-info { flex: 1; min-width: 220px; }
+  .wotm-label {
+    font-family: 'Bangers', cursive;
+    font-size: 0.75rem; letter-spacing: 3px;
+    color: var(--accent); margin-bottom: 0.4rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .wotm-label::before {
+    content: ''; display: inline-block;
+    width: 18px; height: 2px; background: var(--accent);
+  }
+  .wotm-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    letter-spacing: 2px; line-height: 1;
+    margin-bottom: 0.6rem;
+    color: var(--ink);
+  }
+  .wotm-desc {
+    font-size: 0.88rem; font-weight: 700;
+    color: var(--panel-text); line-height: 1.6;
+    margin-bottom: 1.1rem;
+    max-width: 360px;
+  }
+  .wotm-open {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent); color: #fff;
+    font-family: 'Bangers', cursive; font-size: 0.95rem; letter-spacing: 1.5px;
+    padding: 6px 18px; border-radius: 4px;
+    text-decoration: none; border: 2px solid var(--accent);
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .wotm-open:hover { opacity: 0.85; transform: translate(-1px,-1px); }
+
+  @media (max-width: 600px) {
+    .wotm-inner { flex-direction: column; align-items: stretch; }
+    .wotm-card  { width: 100%; }
+    .wotm-img-wrap { height: 260px; }
+  }
+
+
+  /* ── ABOUT SECTION ── */
+  .about-project-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: #fff;
+    font-family: 'Bangers', cursive; font-size: 0.8rem; letter-spacing: 3px;
+    padding: 4px 16px; border-radius: 2px;
+    border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+    margin-bottom: 1.2rem;
+  }
+  .about-headline {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: 2px;
+    line-height: 1.05; margin-bottom: 1.1rem;
+    color: var(--ink);
+  }
+  .about-headline span { color: var(--accent); }
+  .about-body {
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--panel-text); line-height: 1.75;
+    max-width: 600px; margin-bottom: 1.4rem;
+  }
+  .about-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .about-tag {
+    font-family: 'Bangers', cursive; font-size: 0.88rem; letter-spacing: 1px;
+    padding: 3px 13px; border: 2px solid var(--ink);
+    border-radius: 3px; box-shadow: 2px 2px 0 var(--ink);
+    color: var(--ink); background: var(--panel-bg);
+    transition: transform 0.1s;
+  }
+  .about-tag:hover { transform: translate(-1px,-1px); }
+
+  /* divider line */
+  .about-divider {
+    height: 2px; background: var(--mid);
+    margin: 0 0 2.5rem;
+  }
+
+  /* creator card */
+  .creator-card {
+    display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap;
+  }
+  .creator-photo-wrap {
+    flex-shrink: 0; position: relative;
+    width: 110px;
+  }
+  .creator-photo {
+    width: 110px; height: auto;
+    object-fit: contain;
+    display: block;
+    border: var(--border);
+    box-shadow: var(--shadow);
+    border-radius: 4px;
+  }
+  .creator-photo-badge {
+    position: absolute; bottom: -10px; right: -10px;
+    background: var(--accent); color: #fff;
+    font-family: 'Bangers', cursive; font-size: 0.7rem; letter-spacing: 2px;
+    padding: 2px 10px; border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
+    border-radius: 2px;
+  }
+  .creator-info { flex: 1; min-width: 200px; }
+  .creator-eyebrow {
+    font-family: 'Bangers', cursive; font-size: 0.75rem;
+    letter-spacing: 3px; color: var(--accent);
+    margin-bottom: 0.3rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .creator-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 16px; height: 2px; background: var(--accent);
+  }
+  .creator-name {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.5rem); letter-spacing: 2px;
+    line-height: 1; margin-bottom: 0.5rem; color: var(--ink);
+  }
+  .creator-role {
+    font-family: 'Bangers', cursive; font-size: 0.95rem;
+    letter-spacing: 2px; color: var(--muted);
+    margin-bottom: 0.9rem;
+  }
+  .creator-bio {
+    font-size: 0.9rem; font-weight: 700;
+    color: var(--panel-text); line-height: 1.7;
+    margin-bottom: 1.2rem; max-width: 400px;
+  }
+  .creator-links {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+  }
+  .creator-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Bangers', cursive; font-size: 0.9rem; letter-spacing: 1.5px;
+    padding: 6px 16px; border-radius: 4px;
+    text-decoration: none;
+    border: var(--border); box-shadow: var(--shadow);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .creator-link:hover  { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+  .creator-link:active { transform: translate(1px,1px);   box-shadow: 2px 2px 0 var(--ink); }
+  .creator-link.primary { background: var(--ink); color: var(--paper); }
+  .creator-link.ghost   { background: var(--panel-bg); color: var(--ink); }
+
+  @media (max-width: 600px) {
+    .creator-card { flex-direction: column; }
+    .creator-photo-wrap { width: 120px; }
+    .creator-photo { width: 120px; height: auto; }
+  }
+
 </style>
 </head>
 <body>
@@ -611,11 +1137,17 @@
     <li><a href="#download">Download</a></li>
     <li><a href="#shortcuts">Shortcuts</a></li>
     <li><a href="#contribute">Contribute</a></li>
+    <li><a href="#about">About</a></li>
     <li><a href="https://github.com/iamovi/SwipeWaifu" target="_blank">GitHub ↗</a></li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <div style="display:flex;align-items:center;gap:0.5rem;position:relative;z-index:1;">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark">
+      <i id="themeIcon" class="fa-solid fa-sun"></i>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <!-- MOBILE DRAWER -->
@@ -626,7 +1158,7 @@
     <div class="drawer-head">
       <div class="drawer-logo" style="display:flex;align-items:center;gap:10px;">
         <img src="https://ik.imagekit.io/iamovi/SwipeWaifu/logo.png" alt="SwipeWaifu">
-        <span style="font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:3px;color:rgba(255,255,255,0.85);">MENU</span>
+        <span style="font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:3px;color:var(--drawer-link-color);">MENU</span>
       </div>
     </div>
     <ul class="drawer-links">
@@ -634,6 +1166,7 @@
       <li><a href="#download"   class="dl-link"><i class="fa-solid fa-download"></i>     Download</a></li>
       <li><a href="#shortcuts"  class="dl-link"><i class="fa-solid fa-keyboard"></i>     Shortcuts</a></li>
       <li><a href="#contribute" class="dl-link"><i class="fa-solid fa-code-fork"></i>    Contribute</a></li>
+      <li><a href="#about"  class="dl-link"><i class="fa-solid fa-circle-info"></i>   About</a></li>
       <li><a href="https://iamovi.github.io/SwipeWaifu/" target="_blank"><i class="fa-solid fa-globe"></i> Live App</a></li>
     </ul>
     <div class="drawer-foot">
@@ -679,6 +1212,33 @@
     <span><i class="fa-solid fa-circle-half-stroke"></i>DARK / LIGHT THEME</span>
     <span><i class="fa-solid fa-volume-high"></i>SOUND EFFECTS</span>
     <span><i class="fa-solid fa-shield-halved"></i>NSFW MODE</span>
+  </div>
+</div>
+
+
+<!-- WAIFU OF THE MOMENT -->
+<div class="wotm-wrap">
+  <div class="wotm-inner fade-in">
+    <div class="wotm-card" id="wotmCard">
+      <div class="wotm-img-wrap">
+        <div class="wotm-skeleton" id="wotmSkeleton"></div>
+        <img id="wotmImg" class="loading" src="" alt="Waifu of the moment">
+      </div>
+      <div class="wotm-card-foot">
+        <span class="wotm-cat" id="wotmCat">WAIFU</span>
+        <button class="wotm-refresh" id="wotmRefresh" title="New waifu">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </div>
+    </div>
+    <div class="wotm-info">
+      <div class="wotm-label">WAIFU OF THE MOMENT</div>
+      <h2 class="wotm-title">RANDOM<br>WAIFU<br>DROP</h2>
+      <p class="wotm-desc">A fresh random waifu every time you visit — hit refresh for a new one.</p>
+      <a href="https://iamovi.github.io/SwipeWaifu/" target="_blank" class="wotm-open">
+        <i class="fa-solid fa-hand-pointer"></i> Swipe More
+      </a>
+    </div>
   </div>
 </div>
 
@@ -965,6 +1525,67 @@
   </div>
 </section>
 
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section class="section fade-in" id="about">
+
+  <!-- About Project -->
+  <div class="about-project-label"><i class="fa-solid fa-circle-info"></i> ABOUT PROJECT</div>
+  <h2 class="about-headline">What is <span>SwipeWaifu</span>?</h2>
+  <p class="about-body">
+    <strong>SwipeWaifu</strong> is an open-source anime waifu discovery app built for anime enthusiasts.
+    Swipe through 30+ SFW categories, save your favorites, use keyboard shortcuts on desktop,
+    and chat with the Anime Fanbase community — all in one place. Available on Android, Web,
+    and soon on Windows &amp; Linux.
+  </p>
+  <p class="about-body" style="margin-top:-0.8rem;">
+    The project aims to be fast, fun, and free — celebrating anime culture through clean design
+    and a constantly growing image library. Open source and community-driven, contributions are
+    always welcome.
+  </p>
+  <div class="about-tags">
+    <span class="about-tag">Anime</span>
+    <span class="about-tag">Open Source</span>
+    <span class="about-tag">Android</span>
+    <span class="about-tag">Web App</span>
+    <span class="about-tag">Windows</span>
+    <span class="about-tag">Community</span>
+    <span class="about-tag">Free</span>
+  </div>
+
+  <div class="about-divider"></div>
+
+  <!-- Creator -->
+  <div class="creator-card">
+    <div class="creator-photo-wrap">
+      <img class="creator-photo"
+           src="https://raw.githubusercontent.com/iamovi/iamovi/refs/heads/main/assets/init_ovi.jpg"
+           alt="Ovi ren — Creator">
+      <span class="creator-photo-badge">CREATOR</span>
+    </div>
+    <div class="creator-info">
+      <div class="creator-eyebrow">ABOUT THE CREATOR</div>
+      <div class="creator-name">OVI REN</div>
+      <div class="creator-role">WRITER &amp; DEVELOPER</div>
+      <p class="creator-bio">
+        Hey, I'm Ovi ren — I write scripts and build things. SwipeWaifu is my open-source
+        project for the anime community. I like keeping things simple, fun, and free.
+      </p>
+      <div class="creator-links">
+        <a href="https://iamovi.github.io" target="_blank" class="creator-link primary">
+          <i class="fa-solid fa-globe"></i> Visit my site
+        </a>
+        <a href="https://github.com/iamovi" target="_blank" class="creator-link ghost">
+          <i class="fa-brands fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">
@@ -978,7 +1599,7 @@
     <a href="https://github.com/iamovi/SwipeWaifu/blob/main/LICENSE" target="_blank"><i class="fa-solid fa-file-contract"></i> License</a>
     <a href="https://iamovi.github.io" target="_blank"><i class="fa-solid fa-user"></i> Creator</a>
   </div>
-  <p class="footer-copy">Created by <strong style="color:rgba(255,255,255,0.65)">Ovi ren</strong> · MIT License · 2026</p>
+  <p class="footer-copy">Created by <strong style="color:var(--footer-link)">Ovi ren</strong> · MIT License · 2026</p>
 </footer>
 
 <script>
@@ -1007,102 +1628,207 @@
     });
   });
 
+  // ── THEME TOGGLE ──
+  const htmlEl    = document.documentElement;
+  const toggleBtn = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+
+  // Persist preference
+  const saved = localStorage.getItem('sww-theme');
+  if (saved === 'dark') { applyDark(); }
+  else if (themeIcon) { themeIcon.className = 'fa-solid fa-sun'; }
+
+  toggleBtn.addEventListener('click', () => {
+    if (htmlEl.classList.contains('dark')) {
+      htmlEl.classList.remove('dark');
+      localStorage.setItem('sww-theme', 'light');
+      themeIcon.className = 'fa-solid fa-sun';
+      // Refresh petals with new color palette
+      if (window._sakuraInit) window._sakuraInit();
+    } else {
+      applyDark();
+      if (window._sakuraInit) window._sakuraInit();
+    }
+  });
+
+  function applyDark() {
+    htmlEl.classList.add('dark');
+    localStorage.setItem('sww-theme', 'dark');
+    if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
+  }
+
   // ══════════════════════════════════════════════════════════════
-  //  🌸  EMOJI FLOWER RAIN  🌸
-  //  Real emoji flowers falling through the nav bar & mobile drawer
+  //  🌸  SAKURA PETAL RAIN  🌸
+  //  SVG petals in 3 depth layers with wind drift & tumble wobble
   // ══════════════════════════════════════════════════════════════
   (function () {
     'use strict';
 
-    const FLOWERS = ['🌸'];
     const isMobile = window.innerWidth < 768;
     const rand = (a, b) => Math.random() * (b - a) + a;
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
-    function spawnFlower(container, containerId) {
-      const el = document.createElement('span');
-      el.className = 'flower-particle';
-      el.textContent = '🌸';
+    // ── Petal shape variants (SVG paths, all 20×20 viewBox) ──
+    const SHAPES = [
+      // Classic 5-petal sakura
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <g fill="currentColor">
+          <ellipse cx="10" cy="5"  rx="2.4" ry="4.5" transform="rotate(0   10 10)"/>
+          <ellipse cx="10" cy="5"  rx="2.4" ry="4.5" transform="rotate(72  10 10)"/>
+          <ellipse cx="10" cy="5"  rx="2.4" ry="4.5" transform="rotate(144 10 10)"/>
+          <ellipse cx="10" cy="5"  rx="2.4" ry="4.5" transform="rotate(216 10 10)"/>
+          <ellipse cx="10" cy="5"  rx="2.4" ry="4.5" transform="rotate(288 10 10)"/>
+          <circle cx="10" cy="10" r="1.8" fill="white" opacity="0.6"/>
+        </g>
+      </svg>`,
+      // Single teardrop petal
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path fill="currentColor" d="M10 2 C6 6 4 10 6 14 C7.5 17 12.5 17 14 14 C16 10 14 6 10 2 Z"/>
+        <path fill="white" opacity="0.35" d="M10 4 C8 7 7 10 8 13 C8.5 11 9.5 8 10 4 Z"/>
+      </svg>`,
+      // Rounded 4-petal
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <g fill="currentColor">
+          <ellipse cx="10" cy="5.5" rx="2.2" ry="4"  transform="rotate(0   10 10)"/>
+          <ellipse cx="10" cy="5.5" rx="2.2" ry="4"  transform="rotate(90  10 10)"/>
+          <ellipse cx="10" cy="5.5" rx="2.2" ry="4"  transform="rotate(180 10 10)"/>
+          <ellipse cx="10" cy="5.5" rx="2.2" ry="4"  transform="rotate(270 10 10)"/>
+          <circle cx="10" cy="10" r="1.5" fill="white" opacity="0.5"/>
+        </g>
+      </svg>`,
+    ];
 
-      const size     = rand(isMobile ? 11 : 13, isMobile ? 20 : 26);
-      const left     = rand(1, 97);
-      const duration = rand(5, 14);
-      const delay    = rand(-duration, 2);
-      const spin     = rand(-540, 540);
-      const scale    = rand(0.6, 1.15);
-      const opacity  = rand(0.55, 0.9);
-      const isDrawer = containerId === 'drawerPetals';
-      const navHeight = containerId === 'navPetals'
-        ? (document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 58)
-        : null;
-      const fallDist = isDrawer
-        ? `calc(100vh + ${size * 2}px)`
-        : `${navHeight + size + 6}px`;
-
-      const swayAmt  = rand(-18, 18);
-
-      el.style.cssText = `
-        left: ${left}%;
-        top: -${size + 4}px;
-        font-size: ${size}px;
-        --scale: ${scale};
-        --spin: ${spin}deg;
-        --max-opacity: ${opacity};
-        --fall-dist: ${fallDist};
-        animation-name: petalFall;
-        animation-duration: ${duration}s;
-        animation-delay: ${delay}s;
-        animation-timing-function: cubic-bezier(0.25, 0.1, 0.35, 1);
-        animation-iteration-count: infinite;
-        filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35));
-        transform-origin: center center;
-      `;
-
-      // Subtle horizontal drift via a second keyframe layer using JS animation
-      container.appendChild(el);
-
-      // Gentle horizontal sway overlay using Web Animations API
-      try {
-        el.animate([
-          { marginLeft: '0px' },
-          { marginLeft: `${swayAmt}px` },
-          { marginLeft: `${-swayAmt * 0.6}px` },
-          { marginLeft: '0px' },
-        ], {
-          duration: rand(3000, 7000),
-          delay: rand(0, 2000),
-          iterations: Infinity,
-          easing: 'ease-in-out',
-          direction: 'alternate',
-        });
-      } catch(e) { /* graceful fallback for older browsers */ }
-
-      return el;
+    // Theme-aware petal palettes
+    // Dark nav → bright pinks pop nicely
+    // Light nav (dark mode gives light nav? No — nav is always dark-ish)
+    // Both modes keep nav dark, so pinks always work.
+    // But in light mode body is white, so we also need gentle petals.
+    function getPalette() {
+      return [
+        '#ffb7c5', '#ffc0cb', '#ff91a8', '#ffdde6',
+        '#f9b8d0', '#ffcfe8', '#ffe4ef', '#f8d7e3',
+        '#fae0f0', '#ffffff', '#ffd6e7', '#ffa8c4',
+      ];
     }
 
-    function initContainer(containerId, count) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-      container.innerHTML = '';
-      for (let i = 0; i < count; i++) {
-        spawnFlower(container, containerId);
+    // Layer config
+    const LAYERS = [
+      { cls: 'layer-far',  sMin: 6,  sMax: 10, dMin: 10, dMax: 17, oMin: 0.25, oMax: 0.45 },
+      { cls: 'layer-mid',  sMin: 10, sMax: 16, dMin: 7,  dMax: 13, oMin: 0.45, oMax: 0.7  },
+      { cls: 'layer-near', sMin: 15, sMax: 24, dMin: 5,  dMax: 10, oMin: 0.65, oMax: 0.92 },
+    ];
+
+    function makePetal(container, isDrawer) {
+      const navEl = document.querySelector('nav');
+      const fallDist = isDrawer
+        ? `calc(100vh + 40px)`
+        : `${(navEl ? navEl.offsetHeight : 58)}px`;
+
+      const layer   = pick(LAYERS);
+      const size    = rand(layer.sMin, layer.sMax) * (isMobile ? 0.85 : 1);
+      const left    = rand(-2, 99);
+      const dur     = rand(layer.dMin, layer.dMax);
+      const delay   = rand(-dur, 1);
+      const spin    = rand(-600, 600);
+      const sc      = rand(0.75, 1.15);
+      const op      = rand(layer.oMin, layer.oMax);
+      const color   = pick(getPalette());
+      const shape   = pick(SHAPES);
+      const wobDur  = rand(0.6, 1.8).toFixed(2);
+      const wx1     = rand(-22, 22).toFixed(1);
+      const wx2     = rand(-30, 30).toFixed(1);
+      const blur    = layer.cls === 'layer-far' ? 'blur(0.6px)' : 'none';
+
+      const el = document.createElement('div');
+      el.className = `petal ${layer.cls}`;
+      el.innerHTML = shape;
+      el.style.cssText = `
+        left:${left}%;
+        top:-${size + 5}px;
+        width:${size}px;
+        height:${size}px;
+        color:${color};
+        --dur:${dur}s;
+        --delay:${delay}s;
+        --spin:${spin}deg;
+        --sc:${sc};
+        --op:${op};
+        --dist:${fallDist};
+        --wx1:${wx1}px;
+        --wx2:${wx2}px;
+        --wob:${wobDur}s;
+        filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2)) ${blur};
+      `;
+
+      container.appendChild(el);
+    }
+
+    function initContainer(id, count) {
+      const c = document.getElementById(id);
+      if (!c) return;
+      c.innerHTML = '';
+      const isDrawer = id === 'drawerPetals';
+      const perLayer = [
+        Math.round(count * 0.3),
+        Math.round(count * 0.4),
+        Math.round(count * 0.3),
+      ];
+      for (let l = 0; l < 3; l++) {
+        for (let i = 0; i < perLayer[l]; i++) makePetal(c, isDrawer);
       }
     }
 
-    // Spawn flowers into nav
-    const NAV_COUNT    = isMobile ? 5 : 10;
-    const DRAWER_COUNT = isMobile ? 8 : 12;
+    const NAV_COUNT    = isMobile ? 9  : 22;
+    const DRAWER_COUNT = isMobile ? 14 : 20;
+
+    // Expose so theme toggle can reinit
+    window._sakuraInit = function() {
+      initContainer('navPetals', NAV_COUNT);
+    };
 
     initContainer('navPetals', NAV_COUNT);
 
-    // Spawn drawer flowers on every open so they fill the full height correctly
-    const menuEl = document.getElementById('mobileMenu');
-    new MutationObserver(() => {
-      if (menuEl.classList.contains('open')) {
-        setTimeout(() => initContainer('drawerPetals', DRAWER_COUNT), 120);
+    // Wind gust
+    function gustBurst() {
+      const c = document.getElementById('navPetals');
+      if (!c) return;
+      const extra = isMobile ? 3 : 6;
+      for (let i = 0; i < extra; i++) {
+        const p = document.createElement('div');
+        const layer = pick(LAYERS.slice(1));
+        const size  = rand(layer.sMin, layer.sMax);
+        const color = pick(['#ff91a8','#ffb7c5','#ffe4ef','#ffd6e7']);
+        const navEl = document.querySelector('nav');
+        const fallDist = `${(navEl ? navEl.offsetHeight : 58)}px`;
+        const dur   = rand(3, 7);
+        const spin  = rand(-400, 400);
+        p.className = `petal ${layer.cls}`;
+        p.innerHTML = pick(SHAPES);
+        p.style.cssText = `
+          left:${rand(5,90)}%;top:-${size+4}px;width:${size}px;height:${size}px;
+          color:${color};--dur:${dur}s;--delay:0s;--spin:${spin}deg;--sc:1;
+          --op:0.85;--dist:${fallDist};--wx1:${rand(-30,30).toFixed(1)}px;
+          --wx2:${rand(-40,40).toFixed(1)}px;--wob:${rand(0.4,1).toFixed(2)}s;
+          filter:drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+        `;
+        c.appendChild(p);
+        setTimeout(() => p.remove(), (dur + 0.5) * 1000);
       }
-    }).observe(menuEl, { attributes: true, attributeFilter: ['class'] });
+      setTimeout(gustBurst, rand(6000, 14000));
+    }
+    setTimeout(gustBurst, rand(3000, 8000));
 
-    // Refresh nav on resize
+    // Drawer on open
+    const menuEl = document.getElementById('mobileMenu');
+    if (menuEl) {
+      new MutationObserver(() => {
+        if (menuEl.classList.contains('open')) {
+          setTimeout(() => initContainer('drawerPetals', DRAWER_COUNT), 120);
+        }
+      }).observe(menuEl, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    // Refresh on resize
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
@@ -1110,6 +1836,45 @@
     }, { passive: true });
 
   })();
+
+  // ── WAIFU OF THE MOMENT ──
+  (function() {
+    const CATS = ['waifu','neko','shinobu','megumin','wave','smile','blush','happy','wink'];
+    const img  = document.getElementById('wotmImg');
+    const skel = document.getElementById('wotmSkeleton');
+    const catEl= document.getElementById('wotmCat');
+    const btn  = document.getElementById('wotmRefresh');
+    if (!img) return;
+
+    async function fetchWaifu() {
+      const cat = CATS[Math.floor(Math.random() * CATS.length)];
+      btn.classList.add('spinning');
+      img.classList.add('loading');
+      skel.style.display = 'block';
+      try {
+        const res  = await fetch(`https://api.waifu.pics/sfw/${cat}`);
+        const data = await res.json();
+        img.onload = () => {
+          img.classList.remove('loading');
+          skel.style.display = 'none';
+          btn.classList.remove('spinning');
+        };
+        img.onerror = () => {
+          btn.classList.remove('spinning');
+          fetchWaifu(); // retry on error
+        };
+        img.src = data.url;
+        catEl.textContent = cat.toUpperCase();
+      } catch(e) {
+        btn.classList.remove('spinning');
+        skel.style.display = 'none';
+      }
+    }
+
+    fetchWaifu();
+    btn.addEventListener('click', fetchWaifu);
+  })();
+
 </script>
 </body>
 </html>
