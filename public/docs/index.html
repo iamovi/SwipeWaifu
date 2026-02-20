@@ -12,7 +12,7 @@
 <meta name="keywords" content="SwipeWaifu, anime waifu, waifu app, anime images, neko, shinobu, megumin, anime community, PWA, android app, open source anime">
 <meta name="author" content="Ovi ren">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#ffffff" id="metaThemeColor">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
@@ -51,7 +51,7 @@
     --white:  #fafaf8;
     --paper:  #f5f3ee;
     --mid:    #e8e5de;
-    --muted:  #777777;
+    --muted:  #595959;
     --accent: #d63080;
     --border: 2px solid #111111;
     --shadow: 4px 4px 0 #111111;
@@ -302,8 +302,6 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 1.75rem; height: 58px;
     border-bottom: 2px solid var(--nav-border);
-    overflow: hidden;
-    clip-path: inset(0 0 0 0);
     transition: background-color 0.3s, border-color 0.3s;
   }
 
@@ -314,6 +312,7 @@
     pointer-events: none;
     z-index: 0;
     overflow: hidden;
+    clip-path: inset(0 0 0 0);
   }
 
   /* ── SAKURA PETAL PARTICLES ── */
@@ -510,8 +509,8 @@
     position: relative; min-height: 88vh;
     display: flex; align-items: center; justify-content: center;
     padding: 80px 2rem;
-    background-image: url('https://ik.imagekit.io/iamovi/SwipeWaifu/pink-hair.jpg');
     background-size: cover; background-position: center;
+    background-color: var(--mid);
   }
   .hero-overlay {
     position: absolute; inset: 0; background: var(--hero-overlay);
@@ -877,7 +876,7 @@
   .footer-copy { font-size: 0.76rem; }
 
   /* ── SCROLL OFFSET ── */
-  #features, #download, #shortcuts, #contribute, #install, #about {
+  #features, #download, #shortcuts, #contribute, #install, #about, #screenshots, #changelog, #faq, #privacy {
     scroll-margin-top: 60px;
   }
 
@@ -1124,9 +1123,483 @@
     .creator-photo { width: 120px; height: auto; }
   }
 
+  /* ── TOP PROGRESS BAR ── */
+  #pageProgress {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    height: 3px; width: 0%;
+    background: linear-gradient(90deg, var(--accent), #ff6eb4);
+    transition: width 0.2s ease, opacity 0.4s ease;
+    pointer-events: none;
+    box-shadow: 0 0 8px rgba(214,48,128,0.6);
+  }
+  #pageProgress.done { opacity: 0; }
+
+  /* ── BACK TO TOP ── */
+  #backToTop {
+    position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 500;
+    width: 42px; height: 42px;
+    background: var(--ink); color: var(--paper);
+    border: 2px solid var(--ink); border-radius: 4px;
+    box-shadow: 3px 3px 0 var(--accent);
+    cursor: pointer; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.25s, transform 0.25s, box-shadow 0.12s;
+    pointer-events: none;
+  }
+  #backToTop.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+  #backToTop:hover   { box-shadow: 5px 5px 0 var(--accent); transform: translate(-1px,-1px); }
+  #backToTop:active  { box-shadow: 1px 1px 0 var(--accent); transform: translate(1px,1px); }
+  #backToTop:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* ── HAMBURGER FOCUS RING ── */
+  .hamburger:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .hamburger { outline: none; }
+
+  /* ── SCROLLSPY NAV ACTIVE ── */
+  .nav-links a.active {
+    background: var(--nav-link-hbg);
+    color: var(--nav-link-hover);
+    position: relative;
+  }
+  .nav-links a.active::after {
+    content: '';
+    position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+    width: 60%; height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .drawer-links a.active {
+    background: var(--drawer-hover-bg);
+    color: var(--drawer-hover-text);
+  }
+  .drawer-links a.active i { color: var(--accent); }
+
+  /* ── WAIFU IMAGE ENTRANCE ANIMATION ── */
+  @keyframes wotmEntrance {
+    from { opacity: 0; transform: translateY(10px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .wotm-img-wrap img.entered {
+    animation: wotmEntrance 0.45s cubic-bezier(.22,.68,0,1.2) forwards;
+  }
+
+  /* ── COPY IMAGE LINK BUTTON ── */
+  .wotm-copy-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 0.9rem;
+    padding: 2px 4px; border-radius: 3px;
+    transition: color 0.15s, transform 0.15s;
+    line-height: 1; position: relative;
+  }
+  .wotm-copy-btn:hover { color: var(--accent); }
+  .wotm-copy-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .wotm-copy-btn .copy-tooltip {
+    position: absolute; bottom: calc(100% + 6px); left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink); color: var(--paper);
+    font-family: 'Bangers', cursive; font-size: 0.7rem; letter-spacing: 1px;
+    padding: 2px 8px; border-radius: 3px; white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .wotm-copy-btn.copied { color: #22c55e; }
+  .wotm-copy-btn.copied .copy-tooltip { opacity: 1; }
+
+  /* ── SHARE BUTTON & MODAL ── */
+  #shareBtn {
+    position: fixed; bottom: 4.5rem; right: 1.5rem; z-index: 500;
+    width: 42px; height: 42px;
+    background: var(--accent); color: #fff;
+    border: 2px solid var(--accent); border-radius: 4px;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.25);
+    cursor: pointer; font-size: 0.95rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: box-shadow 0.12s, transform 0.12s;
+  }
+  #shareBtn:hover  { box-shadow: 5px 5px 0 rgba(0,0,0,0.3); transform: translate(-1px,-1px); }
+  #shareBtn:active { box-shadow: 1px 1px 0 rgba(0,0,0,0.2); transform: translate(1px,1px); }
+  #shareBtn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  #shareModal {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.55);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  #shareModal.open { opacity: 1; pointer-events: all; }
+  .share-box {
+    background: var(--panel-bg); border: var(--border);
+    border-radius: 6px; box-shadow: 6px 6px 0 var(--ink);
+    padding: 1.75rem 2rem; min-width: 280px; max-width: 360px; width: 90%;
+    transform: translateY(16px) scale(0.97);
+    transition: transform 0.25s cubic-bezier(.22,.68,0,1.2);
+  }
+  #shareModal.open .share-box { transform: translateY(0) scale(1); }
+  .share-title {
+    font-family: 'Bangers', cursive; font-size: 1.4rem;
+    letter-spacing: 2px; margin-bottom: 1.1rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .share-close {
+    background: none; border: 1px solid var(--mid);
+    border-radius: 3px; cursor: pointer; color: var(--muted);
+    width: 26px; height: 26px; font-size: 0.8rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .share-close:hover { background: var(--mid); color: var(--ink); }
+  .share-options { display: flex; flex-direction: column; gap: 0.65rem; }
+  .share-opt {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    background: var(--paper); border: var(--border);
+    border-radius: 4px; box-shadow: 2px 2px 0 var(--ink);
+    text-decoration: none; color: var(--ink);
+    font-family: 'Bangers', cursive; font-size: 1rem; letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+  }
+  .share-opt:hover  { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--ink); }
+  .share-opt:active { transform: translate(1px,1px);   box-shadow: 1px 1px 0 var(--ink); }
+  .share-opt i { width: 18px; text-align: center; font-size: 1rem; }
+  .share-opt.twitter i { color: #1da1f2; }
+  .share-opt.facebook i { color: #1877f2; }
+  .share-opt.instagram i { color: #e1306c; }
+  .share-opt.whatsapp i { color: #25d366; }
+  .share-opt.copied-link { color: #22c55e; }
+
+  /* ── FAQ SECTION ── */
+  .faq-list { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 1rem; }
+  .faq-item {
+    background: var(--panel-bg); border: var(--border);
+    border-radius: 5px; box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: box-shadow 0.12s, background 0.3s;
+  }
+  .faq-item:hover { box-shadow: 5px 5px 0 var(--ink); }
+  .faq-q {
+    width: 100%; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1rem 1.25rem;
+    font-family: 'Bangers', cursive; font-size: 1.05rem; letter-spacing: 1px;
+    color: var(--ink); text-align: left;
+    transition: background 0.15s;
+  }
+  .faq-q:hover { background: var(--mid); }
+  .faq-q .faq-icon {
+    font-size: 0.8rem; color: var(--accent); flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+  .faq-item.open .faq-q .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.25s;
+    padding: 0 1.25rem;
+    font-size: 0.9rem; font-weight: 700;
+    color: var(--panel-text); line-height: 1.7;
+  }
+  .faq-item.open .faq-a { max-height: 300px; padding: 0 1.25rem 1rem; }
+  .faq-a a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+
+  /* ── SCREENSHOT CAROUSEL ── */
+  .carousel-wrap {
+    position: relative; overflow: hidden;
+    border: var(--border); border-radius: 6px;
+    box-shadow: var(--shadow); background: var(--mid);
+    margin-top: 1.25rem; user-select: none;
+  }
+  .carousel-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+  }
+  .carousel-slide {
+    min-width: 100%; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--mid); overflow: hidden;
+  }
+  .carousel-slide img {
+    width: 100%; height: auto; display: block;
+    object-fit: contain;
+  }
+  .carousel-placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.75rem; width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--mid) 0%, var(--panel-bg) 100%);
+  }
+  .carousel-placeholder i { font-size: 3rem; color: var(--accent); opacity: 0.6; }
+  .carousel-placeholder span {
+    font-family: 'Bangers', cursive; font-size: 0.9rem; letter-spacing: 2px;
+    color: var(--muted);
+  }
+  .carousel-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 38px; height: 38px; z-index: 5;
+    background: var(--ink); color: var(--paper);
+    border: 2px solid var(--ink); border-radius: 4px;
+    box-shadow: 3px 3px 0 var(--accent);
+    cursor: pointer; font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: box-shadow 0.12s, transform 0.12s;
+  }
+  .carousel-btn:hover { box-shadow: 5px 5px 0 var(--accent); transform: translateY(-50%) translate(-1px,-1px); }
+  .carousel-btn.prev { left: 0.65rem; }
+  .carousel-btn.next { right: 0.65rem; }
+  .carousel-dots {
+    display: flex; justify-content: center; gap: 0.4rem;
+    padding: 0.75rem 0 0.5rem;
+  }
+  .carousel-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--mid); border: 2px solid var(--ink);
+    cursor: pointer; transition: background 0.2s, transform 0.2s;
+  }
+  .carousel-dot.active { background: var(--accent); transform: scale(1.25); border-color: var(--accent); }
+  .carousel-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+    padding: 0.5rem 1rem;
+    font-family: 'Bangers', cursive; font-size: 0.85rem; letter-spacing: 1.5px;
+    color: #fff; text-align: center;
+  }
+
+  /* ── CHANGELOG TIMELINE ── */
+  .changelog-wrap { position: relative; padding-left: 1.75rem; margin-top: 1.25rem; }
+  .changelog-wrap::before {
+    content: ''; position: absolute; left: 7px; top: 0; bottom: 0;
+    width: 2px; background: var(--ink);
+  }
+  .changelog-entry { position: relative; margin-bottom: 2rem; }
+  .changelog-entry:last-child { margin-bottom: 0; }
+  .changelog-dot {
+    position: absolute; left: -1.75rem; top: 4px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent); border: 3px solid var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .changelog-dot.upcoming { background: var(--muted); }
+  .changelog-header {
+    display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+  .changelog-ver {
+    font-family: 'Bangers', cursive; font-size: 1.25rem; letter-spacing: 2px;
+    color: var(--ink);
+  }
+  .changelog-badge {
+    font-family: 'Bangers', cursive; font-size: 0.72rem; letter-spacing: 2px;
+    padding: 1px 10px; border-radius: 99px;
+    border: 2px solid var(--ink);
+  }
+  .changelog-badge.latest { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .changelog-badge.stable { background: var(--ink); color: var(--paper); }
+  .changelog-badge.soon   { background: var(--mid); color: var(--muted); }
+  .changelog-date {
+    font-size: 0.78rem; font-weight: 700; color: var(--muted);
+    margin-left: auto;
+  }
+  .changelog-body {
+    background: var(--panel-bg); border: var(--border);
+    border-radius: 5px; box-shadow: 3px 3px 0 var(--ink);
+    padding: 1rem 1.25rem;
+    transition: background 0.3s;
+  }
+  .changelog-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+  .changelog-body li {
+    font-size: 0.88rem; font-weight: 700; color: var(--panel-text);
+    display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5;
+  }
+  .changelog-body li i { color: var(--accent); margin-top: 2px; flex-shrink: 0; font-size: 0.75rem; }
+  .changelog-body li i.fix  { color: #f59e0b; }
+  .changelog-body li i.new  { color: #22c55e; }
+  .changelog-body li i.soon { color: var(--muted); }
+
+  /* ── PULL TO REFRESH ── */
+  .ptr-indicator {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    height: 0; overflow: hidden;
+    font-family: 'Bangers', cursive; font-size: 0.85rem; letter-spacing: 1.5px;
+    color: var(--accent);
+    transition: height 0.2s;
+  }
+  .ptr-indicator i { transition: transform 0.3s; }
+  .ptr-indicator.pulling i { transform: rotate(180deg); }
+  .ptr-indicator.refreshing i { animation: spin 0.6s linear infinite; }
+
+  /* ── DOWNLOAD TABS ── */
+  .dl-tabs {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 2rem;
+  }
+  .dl-tab {
+    font-family: 'Bangers', cursive; font-size: 0.95rem; letter-spacing: 1.5px;
+    padding: 6px 18px; border: 2px solid var(--ink);
+    border-radius: 99px; cursor: pointer; background: none;
+    color: var(--ink); box-shadow: 2px 2px 0 var(--ink);
+    transition: background 0.15s, color 0.15s, transform 0.1s, box-shadow 0.1s;
+  }
+  .dl-tab:hover  { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .dl-tab:active { transform: translate(1px,1px);   box-shadow: 1px 1px 0 var(--ink); }
+  .dl-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 2px 2px 0 rgba(0,0,0,0.25); }
+
+  /* APK file size badge */
+  .apk-size {
+    display: inline-block;
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--muted);
+    margin-top: 0.25rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── CURSOR TRAIL ── */
+  .cursor-petal {
+    position: fixed; pointer-events: none; z-index: 9998;
+    width: 14px; height: 14px;
+    transform-origin: center;
+    animation: cursorPetalFade 0.9s ease-out forwards;
+  }
+  @keyframes cursorPetalFade {
+    0%   { opacity: 0.9; transform: translate(0,0) rotate(0deg) scale(1); }
+    100% { opacity: 0;   transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0.3); }
+  }
+
+  /* ── EASTER EGG OVERLAY ── */
+  #easterEgg {
+    position: fixed; inset: 0; z-index: 9000;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  #easterEgg.show { opacity: 1; pointer-events: all; }
+  .egg-box {
+    background: var(--panel-bg); border: var(--border);
+    border-radius: 8px; box-shadow: 8px 8px 0 var(--accent);
+    padding: 2rem; text-align: center; max-width: 320px; width: 90%;
+    transform: scale(0.85);
+    transition: transform 0.35s cubic-bezier(.22,.68,0,1.2);
+    position: relative;
+  }
+  #easterEgg.show .egg-box { transform: scale(1); }
+  .egg-img {
+    width: 100%; border-radius: 6px; border: var(--border);
+    box-shadow: 4px 4px 0 var(--ink);
+    margin-bottom: 0.85rem;
+    min-height: 120px; background: var(--mid);
+  }
+  .egg-title {
+    font-family: 'Bangers', cursive; font-size: 1.6rem;
+    letter-spacing: 2px; color: var(--accent); margin-bottom: 0.25rem;
+  }
+  .egg-sub {
+    font-size: 0.82rem; font-weight: 700; color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .egg-close {
+    font-family: 'Bangers', cursive; font-size: 0.95rem; letter-spacing: 1.5px;
+    padding: 6px 20px; border: var(--border); border-radius: 4px;
+    box-shadow: 3px 3px 0 var(--ink); cursor: pointer;
+    background: var(--ink); color: var(--paper);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .egg-close:hover  { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+  .egg-close:active { transform: translate(1px,1px);   box-shadow: 1px 1px 0 var(--ink); }
+  #eggPetals {
+    position: fixed; inset: 0; pointer-events: none; z-index: 8999; overflow: hidden;
+  }
+  .egg-petal {
+    position: absolute; pointer-events: none;
+    animation: eggPetalFall linear forwards;
+  }
+  @keyframes eggPetalFall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh)  rotate(720deg); opacity: 0; }
+  }
+
+  /* ── PRIVACY POLICY ── */
+  .privacy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.1rem; margin-top: 1.25rem;
+  }
+  .privacy-card {
+    background: var(--panel-bg); border: var(--border);
+    border-radius: 5px; padding: 1.3rem;
+    box-shadow: var(--shadow); position: relative;
+    transition: transform 0.12s, box-shadow 0.12s, background 0.3s;
+  }
+  .privacy-card:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+  .privacy-card-icon { font-size: 1.3rem; color: var(--accent); margin-bottom: 0.5rem; display: block; }
+  .privacy-card h3 { font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 0.35rem; }
+  .privacy-card p  { font-size: 0.87rem; font-weight: 700; color: var(--panel-text); line-height: 1.65; }
+  .privacy-updated {
+    font-size: 0.78rem; font-weight: 700; color: var(--muted);
+    margin-top: 1.5rem; text-align: center;
+  }
+
 </style>
 </head>
 <body>
+
+<!-- EASTER EGG PETALS -->
+<div id="eggPetals"></div>
+
+<!-- EASTER EGG OVERLAY -->
+<div id="easterEgg">
+  <div class="egg-box">
+    <img id="eggImg" class="egg-img" src="" alt="Secret waifu">
+    <div class="egg-title">✨ YOU FOUND IT ✨</div>
+    <div class="egg-sub">you typed "waifu" — here's your reward 🌸</div>
+    <button class="egg-close" id="eggClose">close</button>
+  </div>
+</div>
+
+<!-- TOP PROGRESS BAR -->
+<div id="pageProgress"></div>
+
+<!-- BACK TO TOP -->
+<button id="backToTop" aria-label="Back to top" title="Back to top">
+  <i class="fa-solid fa-chevron-up"></i>
+</button>
+
+<!-- SHARE BUTTON -->
+<button id="shareBtn" aria-label="Share this page" title="Share">
+  <i class="fa-solid fa-share-nodes"></i>
+</button>
+
+<!-- SHARE MODAL -->
+<div id="shareModal" role="dialog" aria-modal="true" aria-label="Share SwipeWaifu">
+  <div class="share-box">
+    <div class="share-title">
+      SHARE
+      <button class="share-close" id="shareClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="share-options">
+      <button class="share-opt" id="shareCopyLink">
+        <i class="fa-solid fa-link"></i> COPY LINK
+      </button>
+      <a class="share-opt twitter" id="shareTwitter" href="about:blank" target="_blank" rel="noopener">
+        <i class="fa-brands fa-x-twitter"></i> SHARE ON X / TWITTER
+      </a>
+      <a class="share-opt facebook" id="shareFacebook" href="about:blank" target="_blank" rel="noopener">
+        <i class="fa-brands fa-facebook-messenger"></i> SHARE ON MESSENGER
+      </a>
+      <a class="share-opt instagram" id="shareInstagram" href="about:blank" target="_blank" rel="noopener">
+        <i class="fa-brands fa-instagram"></i> SHARE ON INSTAGRAM
+      </a>
+      <a class="share-opt whatsapp" id="shareWhatsapp" href="about:blank" target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp"></i> SHARE ON WHATSAPP
+      </a>
+    </div>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -1137,7 +1610,11 @@
     <li><a href="#download">Download</a></li>
     <li><a href="#shortcuts">Shortcuts</a></li>
     <li><a href="#contribute">Contribute</a></li>
+    <li><a href="#screenshots">Screenshots</a></li>
+    <li><a href="#changelog">Changelog</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="#about">About</a></li>
+    <li><a href="#privacy">Privacy</a></li>
     <li><a href="https://github.com/iamovi/SwipeWaifu" target="_blank">GitHub ↗</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:0.5rem;position:relative;z-index:1;">
@@ -1162,12 +1639,15 @@
       </div>
     </div>
     <ul class="drawer-links">
-      <li><a href="#features"   class="dl-link"><i class="fa-solid fa-star"></i>         Features</a></li>
-      <li><a href="#download"   class="dl-link"><i class="fa-solid fa-download"></i>     Download</a></li>
-      <li><a href="#shortcuts"  class="dl-link"><i class="fa-solid fa-keyboard"></i>     Shortcuts</a></li>
-      <li><a href="#contribute" class="dl-link"><i class="fa-solid fa-code-fork"></i>    Contribute</a></li>
-      <li><a href="#about"  class="dl-link"><i class="fa-solid fa-circle-info"></i>   About</a></li>
-      <li><a href="https://iamovi.github.io/SwipeWaifu/" target="_blank"><i class="fa-solid fa-globe"></i> Live App</a></li>
+      <li><a href="#features"    class="dl-link"><i class="fa-solid fa-star"></i>            Features</a></li>
+      <li><a href="#download"    class="dl-link"><i class="fa-solid fa-download"></i>        Download</a></li>
+      <li><a href="#shortcuts"   class="dl-link"><i class="fa-solid fa-keyboard"></i>        Shortcuts</a></li>
+      <li><a href="#contribute"  class="dl-link"><i class="fa-solid fa-code-fork"></i>       Contribute</a></li>
+      <li><a href="#screenshots" class="dl-link"><i class="fa-solid fa-images"></i>          Screenshots</a></li>
+      <li><a href="#changelog"   class="dl-link"><i class="fa-solid fa-clock-rotate-left"></i> Changelog</a></li>
+      <li><a href="#faq"         class="dl-link"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+      <li><a href="#about"       class="dl-link"><i class="fa-solid fa-circle-info"></i>     About</a></li>
+      <li><a href="#privacy"     class="dl-link"><i class="fa-solid fa-shield-halved"></i>   Privacy</a></li>
     </ul>
     <div class="drawer-foot">
       <a href="https://github.com/iamovi/SwipeWaifu" target="_blank">
@@ -1220,6 +1700,9 @@
 <div class="wotm-wrap">
   <div class="wotm-inner fade-in">
     <div class="wotm-card" id="wotmCard">
+      <div class="ptr-indicator" id="ptrIndicator">
+        <i class="fa-solid fa-rotate-right"></i> <span id="ptrText">PULL TO REFRESH</span>
+      </div>
       <div class="wotm-img-wrap">
         <div class="wotm-skeleton" id="wotmSkeleton"></div>
         <img id="wotmImg" class="loading" src="" alt="Waifu of the moment">
@@ -1327,13 +1810,23 @@
   <div class="dl-inner">
     <h2 class="dl-title fade-in">DOWNLOAD</h2>
     <p class="dl-sub fade-in">Android available now · Windows &amp; Linux coming soon</p>
-    <div class="dl-grid">
+
+    <!-- TABS -->
+    <div class="dl-tabs fade-in">
+      <button class="dl-tab active" data-tab="direct">Direct Download</button>
+      <button class="dl-tab" data-tab="itchio">From Itch.io</button>
+      <button class="dl-tab" data-tab="gh">GH Releases</button>
+    </div>
+
+    <!-- DIRECT DOWNLOAD -->
+    <div class="dl-grid" id="dl-direct">
       <div class="dl-card fade-in">
         <span class="dl-icon"><i class="fa-brands fa-android"></i></span>
         <div class="dl-os">ANDROID</div>
         <div class="dl-ver">v1.1.0 · Available Now</div>
+        <div class="apk-size"><i class="fa-solid fa-file-zipper"></i> 06 MB</div>
         <a href="https://github.com/iamovi/SwipeWaifu/releases/download/v1.1.0/SwipeWaifu-release-v1.1.0.apk"
-           class="btn btn-accent" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px;">
+           class="btn btn-accent" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px; margin-top:0.75rem;">
           <i class="fa-solid fa-download"></i> Download APK
         </a>
         <p style="margin-top:0.55rem; font-size:0.72rem; color:var(--muted); font-weight:700;">
@@ -1357,8 +1850,34 @@
         <div class="dl-os">WEB</div>
         <div class="dl-ver">Always Available · No Install</div>
         <a href="https://iamovi.github.io/SwipeWaifu/" target="_blank"
-           class="btn btn-white" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px;">
+           class="btn btn-white" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px; margin-top:0.75rem;">
           <i class="fa-solid fa-rocket"></i> Open App
+        </a>
+      </div>
+    </div>
+
+    <!-- ITCH.IO -->
+    <div class="dl-grid" id="dl-itchio" style="display:none;">
+      <div class="dl-card fade-in">
+        <span class="dl-icon"><i class="fa-brands fa-itch-io"></i></span>
+        <div class="dl-os">ITCH.IO</div>
+        <div class="dl-ver">v1.1.0 · Android & Web</div>
+        <a href="https://iamovi.itch.io/swipewaifu" target="_blank"
+           class="btn btn-accent" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px; margin-top:0.75rem;">
+          <i class="fa-solid fa-download"></i> Get on itch.io
+        </a>
+      </div>
+    </div>
+
+    <!-- GH RELEASES -->
+    <div class="dl-grid" id="dl-gh" style="display:none;">
+      <div class="dl-card fade-in">
+        <span class="dl-icon"><i class="fa-brands fa-github"></i></span>
+        <div class="dl-os">GITHUB</div>
+        <div class="dl-ver">v1.1.0 · All Releases</div>
+        <a href="https://github.com/iamovi/SwipeWaifu/releases" target="_blank"
+           class="btn btn-white" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px; margin-top:0.75rem;">
+          <i class="fa-brands fa-github"></i> View Releases
         </a>
       </div>
     </div>
@@ -1528,6 +2047,151 @@
 
 <div class="divider"></div>
 
+<!-- SCREENSHOTS CAROUSEL -->
+<section class="section fade-in" id="screenshots">
+  <h2 class="section-title">SCREENSHOTS</h2>
+  <div class="callout red-bar" style="margin-top:0;">
+    <span class="callout-label">APP UI</span>
+    A look at SwipeWaifu in action — swipe, collect, and chat.
+  </div>
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="carousel-btn next" id="carouselNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-slide"><img src="https://ik.imagekit.io/iamovi/SwipeWaifu/1.png" alt="Screenshot 1" loading="lazy"></div>
+      <div class="carousel-slide"><img src="https://ik.imagekit.io/iamovi/SwipeWaifu/2.png" alt="Screenshot 2" loading="lazy"></div>
+      <div class="carousel-slide"><img src="https://ik.imagekit.io/iamovi/SwipeWaifu/3.png" alt="Screenshot 3" loading="lazy"></div>
+      <div class="carousel-slide"><img src="https://ik.imagekit.io/iamovi/SwipeWaifu/4.png" alt="Screenshot 4" loading="lazy"></div>
+      <div class="carousel-slide"><img src="https://ik.imagekit.io/iamovi/SwipeWaifu/5.png" alt="Screenshot 5" loading="lazy"></div>
+      <div class="carousel-slide"><img src="https://ik.imagekit.io/iamovi/SwipeWaifu/6.png" alt="Screenshot 6" loading="lazy"></div>
+    </div>
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CHANGELOG -->
+<section class="section fade-in" id="changelog">
+  <h2 class="section-title">CHANGELOG</h2>
+  <div class="changelog-wrap">
+
+    <!-- v1.1.0 -->
+    <div class="changelog-entry">
+      <div class="changelog-dot"></div>
+      <div class="changelog-header">
+        <span class="changelog-ver">v1.1.0</span>
+        <span class="changelog-badge latest">LATEST</span>
+        <span class="changelog-date"><i class="fa-solid fa-calendar"></i> Feb 19, 2026</span>
+      </div>
+      <div class="changelog-body">
+        <ul>
+          <li><i class="fa-solid fa-circle-dot new"></i> Native Android APK release</li>
+          <li><i class="fa-solid fa-circle-dot new"></i> Community Talks / Chat section added</li>
+          <li><i class="fa-solid fa-circle-dot new"></i> Auto-slide mode with speed controls (2s, 3s, 5s, 10s)</li>
+          <li><i class="fa-solid fa-circle-dot new"></i> Keyboard shortcuts support on desktop</li>
+          <li><i class="fa-solid fa-circle-dot new"></i> History navigation — go back & forward</li>
+          <li><i class="fa-solid fa-circle-dot fix"></i> Improved image loading performance</li>
+          <li><i class="fa-solid fa-circle-dot fix"></i> Various UI fixes and polish</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v1.1 -->
+    <div class="changelog-entry">
+      <div class="changelog-dot"></div>
+      <div class="changelog-header">
+        <span class="changelog-ver">v1.1</span>
+        <span class="changelog-badge stable">STABLE</span>
+        <span class="changelog-date"><i class="fa-solid fa-calendar"></i> Feb 18, 2026</span>
+      </div>
+      <div class="changelog-body">
+        <ul>
+          <li><i class="fa-solid fa-circle-dot new"></i> Initial public release of SwipeWaifu</li>
+          <li><i class="fa-solid fa-circle-dot new"></i> 30+ SFW waifu categories via waifu.pics API</li>
+          <li><i class="fa-solid fa-circle-dot new"></i> Save favorites & download images</li>
+          <li><i class="fa-solid fa-circle-dot new"></i> Dark / Light theme toggle</li>
+          <li><i class="fa-solid fa-circle-dot new"></i> NSFW mode with age verification gate</li>
+          <li><i class="fa-solid fa-circle-dot new"></i> Fully responsive PWA — works on mobile & desktop</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Upcoming -->
+    <div class="changelog-entry">
+      <div class="changelog-dot upcoming"></div>
+      <div class="changelog-header">
+        <span class="changelog-ver">v1.2.0</span>
+        <span class="changelog-badge soon">UPCOMING</span>
+      </div>
+      <div class="changelog-body">
+        <ul>
+          <li><i class="fa-solid fa-circle-dot soon"></i> Windows desktop app</li>
+          <li><i class="fa-solid fa-circle-dot soon"></i> Linux package (.AppImage / .deb)</li>
+          <li><i class="fa-solid fa-circle-dot soon"></i> More community features</li>
+          <li><i class="fa-solid fa-circle-dot soon"></i> Performance improvements & bug fixes</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <a href="https://github.com/iamovi/SwipeWaifu/releases" target="_blank" class="step-link" style="margin-top:1.25rem; display:inline-flex;">
+    <i class="fa-brands fa-github"></i> View all releases on GitHub
+  </a>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section class="section fade-in" id="faq">
+  <h2 class="section-title">FAQ</h2>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Is SwipeWaifu free?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+      <div class="faq-a">Yes, completely free. The web app, Android APK, and all future platform releases are free with no ads, no subscriptions, and no paywalls. It's also fully open source under the MIT license.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Does it work offline?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+      <div class="faq-a">The app requires an internet connection to fetch new waifu images from the waifu.pics API. However, your saved favorites are stored locally on your device and are always accessible offline.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>What is SFW / NSFW?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+      <div class="faq-a">SFW stands for "Safe For Work" — these are clean, non-explicit anime images suitable for all audiences. NSFW stands for "Not Safe For Work" — this content is explicit and only available after passing an age verification gate. SwipeWaifu defaults to SFW mode.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>How do I install on Android?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+      <div class="faq-a">Download the APK from the Download section. Before installing, go to Settings → Security and enable "Install Unknown Sources". Then open the downloaded APK file and tap Install. See the full install guide above for step-by-step instructions.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Is there a Windows or Linux version?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+      <div class="faq-a">Windows and Linux versions are currently in development and will be released in an upcoming version. For now you can use the web app at <a href="https://iamovi.github.io/SwipeWaifu/" target="_blank">iamovi.github.io/SwipeWaifu</a> on any platform.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Where do the images come from?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+      <div class="faq-a">All images are fetched from the <a href="https://waifu.pics" target="_blank">waifu.pics</a> public API — a community-maintained anime image API with 30+ SFW and NSFW categories.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Can I contribute to the project?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+      <div class="faq-a">Absolutely! SwipeWaifu is open source. You can fork the repo, open issues, suggest features, or submit pull requests on <a href="https://github.com/iamovi/SwipeWaifu" target="_blank">GitHub</a>. Check the Contribute section above for the full guide.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>How do I report a bug?</span><i class="fa-solid fa-plus faq-icon"></i></button>
+      <div class="faq-a">Open an issue on <a href="https://github.com/iamovi/SwipeWaifu/issues/new" target="_blank">GitHub Issues</a> with your device info, the steps to reproduce the bug, and what you expected to happen vs what actually happened.</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- ABOUT -->
 <section class="section fade-in" id="about">
 
@@ -1586,6 +2250,50 @@
 
 </section>
 
+<div class="divider"></div>
+
+<!-- PRIVACY POLICY -->
+<section class="section fade-in" id="privacy">
+  <h2 class="section-title">PRIVACY POLICY</h2>
+  <div class="callout red-bar" style="margin-top:0;">
+    <span class="callout-label">TL;DR</span>
+    SwipeWaifu does not collect, store, or sell your personal data. Ever.
+  </div>
+  <div class="privacy-grid">
+    <div class="privacy-card">
+      <span class="privacy-card-icon"><i class="fa-solid fa-database"></i></span>
+      <h3>No Data Collection</h3>
+      <p>SwipeWaifu does not collect any personal information. No accounts, no sign-ups, no tracking. You use the app anonymously.</p>
+    </div>
+    <div class="privacy-card">
+      <span class="privacy-card-icon"><i class="fa-solid fa-image"></i></span>
+      <h3>Images via waifu.pics</h3>
+      <p>All images are fetched from the public <a href="https://waifu.pics" target="_blank" style="color:var(--accent);">waifu.pics</a> API. We do not host or store any images ourselves. Their API is stateless — no user data is sent.</p>
+    </div>
+    <div class="privacy-card">
+      <span class="privacy-card-icon"><i class="fa-solid fa-heart"></i></span>
+      <h3>Local Storage Only</h3>
+      <p>Your saved favorites and preferences (dark/light theme, etc.) are stored locally on your device only. This data never leaves your device and is not accessible to us.</p>
+    </div>
+    <div class="privacy-card">
+      <span class="privacy-card-icon"><i class="fa-solid fa-comments"></i></span>
+      <h3>Community Chat</h3>
+      <p>The built-in Anime Fanbase community chat is a third-party integration. Messages posted there are subject to that platform's own privacy policy. Please be mindful of what you share publicly.</p>
+    </div>
+    <div class="privacy-card">
+      <span class="privacy-card-icon"><i class="fa-solid fa-cookie-bite"></i></span>
+      <h3>No Cookies or Ads</h3>
+      <p>SwipeWaifu uses no advertising cookies, no analytics trackers, and no third-party ad networks. The docs site uses localStorage only to remember your theme preference.</p>
+    </div>
+    <div class="privacy-card">
+      <span class="privacy-card-icon"><i class="fa-solid fa-envelope"></i></span>
+      <h3>Contact</h3>
+      <p>Have a privacy concern or question? Open an issue on <a href="https://github.com/iamovi/SwipeWaifu/issues" target="_blank" style="color:var(--accent);">GitHub</a> and we'll respond as soon as possible.</p>
+    </div>
+  </div>
+  <p class="privacy-updated"><i class="fa-solid fa-calendar-check"></i> Last updated: February 2026</p>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">
@@ -1603,6 +2311,22 @@
 </footer>
 
 <script>
+  // ── TOP PROGRESS BAR ──
+  (function() {
+    const bar = document.getElementById('pageProgress');
+    let w = 0;
+    const iv = setInterval(() => {
+      w += Math.random() * 18;
+      if (w >= 90) { w = 90; clearInterval(iv); }
+      bar.style.width = w + '%';
+    }, 120);
+    window.addEventListener('load', () => {
+      clearInterval(iv);
+      bar.style.width = '100%';
+      setTimeout(() => bar.classList.add('done'), 350);
+    });
+  })();
+
   // ── FADE IN ──
   const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 });
   document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
@@ -1612,12 +2336,29 @@
   const mob = document.getElementById('mobileMenu');
   const ovl = document.getElementById('mobOverlay');
 
-  const openMenu  = () => { ham.classList.add('open');    mob.classList.add('open');    document.body.style.overflow='hidden'; };
-  const closeMenu = () => { ham.classList.remove('open'); mob.classList.remove('open'); document.body.style.overflow=''; };
+  const btt   = document.getElementById('backToTop');
+  const share = document.getElementById('shareBtn');
+
+  const openMenu  = () => {
+    ham.classList.add('open');
+    mob.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (btt)   { btt.style.visibility   = 'hidden'; btt.style.opacity   = '0'; }
+    if (share) { share.style.visibility = 'hidden'; share.style.opacity = '0'; }
+  };
+  const closeMenu = () => {
+    ham.classList.remove('open');
+    mob.classList.remove('open');
+    document.body.style.overflow = '';
+    if (btt)   { btt.style.visibility   = ''; btt.style.opacity   = ''; }
+    if (share) { share.style.visibility = ''; share.style.opacity = ''; }
+  };
 
   ham.addEventListener('click', () => mob.classList.contains('open') ? closeMenu() : openMenu());
   ovl.addEventListener('click', closeMenu);
   document.querySelectorAll('.dl-link').forEach(l => l.addEventListener('click', closeMenu));
+  const drawerClose = document.getElementById('drawerClose');
+  if (drawerClose) drawerClose.addEventListener('click', closeMenu);
 
   // ── SMOOTH SCROLL ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -1632,18 +2373,26 @@
   const htmlEl    = document.documentElement;
   const toggleBtn = document.getElementById('themeToggle');
   const themeIcon = document.getElementById('themeIcon');
+  const metaTheme = document.getElementById('metaThemeColor');
+
+  function setThemeColor(dark) {
+    if (metaTheme) metaTheme.setAttribute('content', dark ? '#0d0d0d' : '#ffffff');
+  }
 
   // Persist preference
   const saved = localStorage.getItem('sww-theme');
   if (saved === 'dark') { applyDark(); }
-  else if (themeIcon) { themeIcon.className = 'fa-solid fa-sun'; }
+  else {
+    if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
+    setThemeColor(false);
+  }
 
   toggleBtn.addEventListener('click', () => {
     if (htmlEl.classList.contains('dark')) {
       htmlEl.classList.remove('dark');
       localStorage.setItem('sww-theme', 'light');
       themeIcon.className = 'fa-solid fa-sun';
-      // Refresh petals with new color palette
+      setThemeColor(false);
       if (window._sakuraInit) window._sakuraInit();
     } else {
       applyDark();
@@ -1655,7 +2404,142 @@
     htmlEl.classList.add('dark');
     localStorage.setItem('sww-theme', 'dark');
     if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
+    setThemeColor(true);
   }
+
+  // ── BACK TO TOP ──
+  const bttBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    bttBtn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  bttBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // ── SCROLLSPY ──
+  (function() {
+    const sections = ['features','download','shortcuts','contribute','screenshots','changelog','faq','about','privacy'];
+    const navAs    = document.querySelectorAll('.nav-links a[href^="#"]');
+    const drawerAs = document.querySelectorAll('.drawer-links a[href^="#"]');
+
+    function getActive() {
+      let current = '';
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= 90) current = id;
+      }
+      return current;
+    }
+
+    function updateSpy() {
+      const active = getActive();
+      [...navAs, ...drawerAs].forEach(a => {
+        const href = a.getAttribute('href').replace('#','');
+        a.classList.toggle('active', href === active && active !== '');
+      });
+    }
+
+    window.addEventListener('scroll', updateSpy, { passive: true });
+    updateSpy();
+  })();
+
+  // ── SHARE MODAL ──
+  (function() {
+    const modal        = document.getElementById('shareModal');
+    const shareBtn     = document.getElementById('shareBtn');
+    const closeBtn     = document.getElementById('shareClose');
+    const copyLinkEl   = document.getElementById('shareCopyLink');
+    const twitterEl    = document.getElementById('shareTwitter');
+    const facebookEl   = document.getElementById('shareFacebook');
+    const instagramEl  = document.getElementById('shareInstagram');
+    const whatsappEl   = document.getElementById('shareWhatsapp');
+
+    const PAGE_URL   = 'https://iamovi.github.io/SwipeWaifu/docs/';
+    const PAGE_TITLE = 'SwipeWaifu — Discover Anime Waifu & Chat with Fanbase';
+
+    const SHARE_URLS = {
+      twitter:   () => `https://twitter.com/intent/tweet?url=${encodeURIComponent(PAGE_URL)}&text=${encodeURIComponent(PAGE_TITLE)}`,
+      facebook:  () => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(PAGE_URL)}`,
+      instagram: () => `https://www.instagram.com/direct/inbox/`,
+      whatsapp:  () => `https://wa.me/?text=${encodeURIComponent(PAGE_TITLE + '\n' + PAGE_URL)}`,
+    };
+
+    function openModal() { modal.classList.add('open'); }
+    function closeModal() { modal.classList.remove('open'); }
+
+    shareBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    [twitterEl, whatsappEl].forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        const key = el.id.replace('share', '').toLowerCase();
+        window.open(SHARE_URLS[key](), '_blank', 'noopener');
+      });
+    });
+
+    // Messenger: deep link on mobile, Facebook share on desktop
+    facebookEl.addEventListener('click', e => {
+      e.preventDefault();
+      navigator.clipboard.writeText(PAGE_URL).then(() => {
+        const orig = facebookEl.innerHTML;
+        facebookEl.innerHTML = '<i class="fa-solid fa-check"></i> LINK COPIED! OPENING MESSENGER...';
+        setTimeout(() => {
+          facebookEl.innerHTML = orig;
+          const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+          if (isMobile) {
+            // Try opening Messenger app via deep link
+            window.location.href = `fb-messenger://share?link=${encodeURIComponent(PAGE_URL)}`;
+            // Fallback to app store if app not installed after 1.5s
+            setTimeout(() => {
+              const isAndroid = /Android/i.test(navigator.userAgent);
+              window.open(isAndroid
+                ? 'https://play.google.com/store/apps/details?id=com.facebook.orca'
+                : 'https://apps.apple.com/app/messenger/id454638411',
+              '_blank');
+            }, 1500);
+          } else {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(PAGE_URL)}`, '_blank', 'noopener');
+          }
+        }, 1200);
+      }).catch(() => {
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if (isMobile) {
+          window.location.href = `fb-messenger://share?link=${encodeURIComponent(PAGE_URL)}`;
+        } else {
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(PAGE_URL)}`, '_blank', 'noopener');
+        }
+      });
+    });
+
+    // Instagram: copy link to clipboard first, then open Instagram DM
+    instagramEl.addEventListener('click', e => {
+      e.preventDefault();
+      navigator.clipboard.writeText(PAGE_URL).then(() => {
+        const orig = instagramEl.innerHTML;
+        instagramEl.innerHTML = '<i class="fa-solid fa-check"></i> LINK COPIED! OPENING INSTAGRAM...';
+        setTimeout(() => {
+          instagramEl.innerHTML = orig;
+          window.open('https://www.instagram.com/direct/inbox/', '_blank', 'noopener');
+        }, 1200);
+      }).catch(() => {
+        window.open('https://www.instagram.com/direct/inbox/', '_blank', 'noopener');
+      });
+    });
+
+    copyLinkEl.addEventListener('click', () => {
+      navigator.clipboard.writeText(PAGE_URL).then(() => {
+        const orig = copyLinkEl.innerHTML;
+        copyLinkEl.innerHTML = '<i class="fa-solid fa-check"></i> LINK COPIED!';
+        copyLinkEl.classList.add('copied-link');
+        setTimeout(() => {
+          copyLinkEl.innerHTML = orig;
+          copyLinkEl.classList.remove('copied-link');
+        }, 2000);
+      });
+    });
+  })();
 
   // ══════════════════════════════════════════════════════════════
   //  🌸  SAKURA PETAL RAIN  🌸
@@ -1699,10 +2583,6 @@
     ];
 
     // Theme-aware petal palettes
-    // Dark nav → bright pinks pop nicely
-    // Light nav (dark mode gives light nav? No — nav is always dark-ish)
-    // Both modes keep nav dark, so pinks always work.
-    // But in light mode body is white, so we also need gentle petals.
     function getPalette() {
       return [
         '#ffb7c5', '#ffc0cb', '#ff91a8', '#ffdde6',
@@ -1839,42 +2719,299 @@
 
   // ── WAIFU OF THE MOMENT ──
   (function() {
-    const CATS = ['waifu','neko','shinobu','megumin','wave','smile','blush','happy','wink'];
-    const img  = document.getElementById('wotmImg');
-    const skel = document.getElementById('wotmSkeleton');
-    const catEl= document.getElementById('wotmCat');
-    const btn  = document.getElementById('wotmRefresh');
+    const img     = document.getElementById('wotmImg');
+    const skel    = document.getElementById('wotmSkeleton');
+    const catEl   = document.getElementById('wotmCat');
+    const btn     = document.getElementById('wotmRefresh');
+    const copyBtn = document.getElementById('wotmCopy');
     if (!img) return;
 
+    let currentUrl = '';
+
     async function fetchWaifu() {
-      const cat = CATS[Math.floor(Math.random() * CATS.length)];
       btn.classList.add('spinning');
+      img.classList.remove('entered');
       img.classList.add('loading');
       skel.style.display = 'block';
       try {
-        const res  = await fetch(`https://api.waifu.pics/sfw/${cat}`);
+        const res  = await fetch(`https://api.waifu.pics/sfw/waifu`);
         const data = await res.json();
+        currentUrl = data.url;
         img.onload = () => {
           img.classList.remove('loading');
           skel.style.display = 'none';
           btn.classList.remove('spinning');
+          // Trigger entrance animation
+          void img.offsetWidth; // reflow
+          img.classList.add('entered');
         };
         img.onerror = () => {
           btn.classList.remove('spinning');
-          fetchWaifu(); // retry on error
+          fetchWaifu();
         };
         img.src = data.url;
-        catEl.textContent = cat.toUpperCase();
+        catEl.textContent = 'WAIFU';
       } catch(e) {
         btn.classList.remove('spinning');
         skel.style.display = 'none';
       }
     }
 
+    // Copy image link
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        if (!currentUrl) return;
+        navigator.clipboard.writeText(currentUrl).then(() => {
+          copyBtn.classList.add('copied');
+          setTimeout(() => copyBtn.classList.remove('copied'), 2000);
+        });
+      });
+    }
+
     fetchWaifu();
     btn.addEventListener('click', fetchWaifu);
   })();
 
+  // ── DOWNLOAD TABS ──
+  (function() {
+    const tabs = document.querySelectorAll('.dl-tab');
+    const grids = {
+      direct: document.getElementById('dl-direct'),
+      itchio: document.getElementById('dl-itchio'),
+      gh:     document.getElementById('dl-gh'),
+    };
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const key = tab.dataset.tab;
+        Object.entries(grids).forEach(([k, el]) => {
+          if (el) el.style.display = k === key ? 'grid' : 'none';
+        });
+      });
+    });
+  })();
+
+  // ── HERO LAZY LOAD ──
+  (function() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    const img = new Image();
+    img.src = 'https://ik.imagekit.io/iamovi/SwipeWaifu/pink-hair.jpg';
+    img.onload = () => {
+      hero.style.backgroundImage = `url('${img.src}')`;
+    };
+  })();
+
+  // ── CAROUSEL ──
+  (function() {
+    const track  = document.getElementById('carouselTrack');
+    const dotsEl = document.getElementById('carouselDots');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    if (!track) return;
+
+    const slides = track.querySelectorAll('.carousel-slide');
+    let current = 0;
+    let autoTimer;
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', `Slide ${i+1}`);
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+    });
+
+    function goTo(idx) {
+      current = (idx + slides.length) % slides.length;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+      resetAuto();
+    }
+
+    function resetAuto() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(() => goTo(current + 1), 4000);
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    // Touch swipe
+    let startX = 0;
+    track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
+    }, { passive: true });
+
+    resetAuto();
+  })();
+
+  // ── FAQ ACCORDION ──
+  (function() {
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.querySelector('.faq-q').addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        // close all
+        document.querySelectorAll('.faq-item.open').forEach(o => o.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  })();
+
+  // ── PULL TO REFRESH (mobile waifu card) ──
+  (function() {
+    const card    = document.getElementById('wotmCard');
+    const ptr     = document.getElementById('ptrIndicator');
+    const ptrText = document.getElementById('ptrText');
+    if (!card || !ptr) return;
+
+    const THRESHOLD = 80;
+    let startY = 0, pulling = false, triggered = false;
+
+    card.addEventListener('touchstart', e => {
+      startY = e.touches[0].clientY;
+      pulling = true;
+      triggered = false;
+    }, { passive: true });
+
+    card.addEventListener('touchmove', e => {
+      if (!pulling) return;
+      const dy = e.touches[0].clientY - startY;
+      if (dy <= 0) { ptr.style.height = '0'; return; }
+
+      // Prevent page scroll while pulling down on card
+      e.preventDefault();
+
+      const h = Math.min(dy * 0.5, 48);
+      ptr.style.height = h + 'px';
+      if (dy > THRESHOLD && !triggered) {
+        ptr.classList.add('pulling');
+        ptrText.textContent = 'RELEASE TO REFRESH';
+      } else if (dy <= THRESHOLD) {
+        ptr.classList.remove('pulling');
+        ptrText.textContent = 'PULL TO REFRESH';
+      }
+    }, { passive: false });
+
+    card.addEventListener('touchend', e => {
+      if (!pulling) return;
+      pulling = false;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (dy > THRESHOLD) {
+        ptr.classList.remove('pulling');
+        ptr.classList.add('refreshing');
+        ptrText.textContent = 'REFRESHING...';
+        document.getElementById('wotmRefresh')?.click();
+        setTimeout(() => {
+          ptr.style.height = '0';
+          ptr.classList.remove('refreshing');
+          ptrText.textContent = 'PULL TO REFRESH';
+        }, 900);
+      } else {
+        ptr.style.height = '0';
+        ptr.classList.remove('pulling');
+        ptrText.textContent = 'PULL TO REFRESH';
+      }
+      triggered = false;
+    }, { passive: true });
+  })();
+
+  // ── CURSOR TRAIL (desktop only) ──
+  (function() {
+    if (window.matchMedia('(hover: none)').matches) return; // skip touch devices
+    const COLORS = ['#ffb7c5','#ffc0cb','#ff91a8','#ffdde6','#ffe4ef','#ffffff','#ffa8c4'];
+    const SHAPES = [
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><g fill="currentColor"><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(0 10 10)"/><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(72 10 10)"/><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(144 10 10)"/><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(216 10 10)"/><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(288 10 10)"/></g></svg>`,
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="currentColor" d="M10 2 C6 6 4 10 6 14 C7.5 17 12.5 17 14 14 C16 10 14 6 10 2 Z"/></svg>`,
+    ];
+    let last = 0;
+    document.addEventListener('mousemove', e => {
+      const now = Date.now();
+      if (now - last < 40) return; // throttle
+      last = now;
+      const el = document.createElement('div');
+      el.className = 'cursor-petal';
+      el.innerHTML = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+      const size = 8 + Math.random() * 10;
+      const tx = (Math.random() - 0.5) * 60;
+      const ty = 20 + Math.random() * 40;
+      const tr = (Math.random() - 0.5) * 360 + 'deg';
+      el.style.cssText = `
+        left:${e.clientX - size/2}px; top:${e.clientY - size/2}px;
+        width:${size}px; height:${size}px;
+        color:${COLORS[Math.floor(Math.random()*COLORS.length)]};
+        --tx:${tx}px; --ty:${ty}px; --tr:${tr};
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 900);
+    });
+  })();
+
+  // ── EASTER EGG ──
+  (function() {
+    const overlay  = document.getElementById('easterEgg');
+    const eggImg   = document.getElementById('eggImg');
+    const eggClose = document.getElementById('eggClose');
+    const eggPetals= document.getElementById('eggPetals');
+    if (!overlay) return;
+
+    let typed = '';
+    const SECRET = 'waifu';
+    const COLORS  = ['#ffb7c5','#ff91a8','#ffdde6','#ffe4ef','#ffa8c4','#ffffff'];
+
+    document.addEventListener('keydown', e => {
+      // ignore if typing in an input/textarea
+      if (['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+      typed += e.key.toLowerCase();
+      if (typed.length > SECRET.length) typed = typed.slice(-SECRET.length);
+      if (typed === SECRET) {
+        typed = '';
+        triggerEgg();
+      }
+    });
+
+    function triggerEgg() {
+      // fetch a waifu image
+      fetch('https://api.waifu.pics/sfw/waifu')
+        .then(r => r.json())
+        .then(d => { eggImg.src = d.url; })
+        .catch(() => { eggImg.src = ''; });
+
+      overlay.classList.add('show');
+      burstPetals();
+    }
+
+    function burstPetals() {
+      eggPetals.innerHTML = '';
+      for (let i = 0; i < 40; i++) {
+        setTimeout(() => {
+          const p = document.createElement('div');
+          p.className = 'egg-petal';
+          const size = 10 + Math.random() * 18;
+          const dur  = 2 + Math.random() * 3;
+          p.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="${size}" height="${size}"><g fill="${COLORS[Math.floor(Math.random()*COLORS.length)]}"><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(0 10 10)"/><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(72 10 10)"/><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(144 10 10)"/><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(216 10 10)"/><ellipse cx="10" cy="5" rx="2.4" ry="4.5" transform="rotate(288 10 10)"/></g></svg>`;
+          p.style.cssText = `left:${Math.random()*100}vw; top:-20px; animation-duration:${dur}s; animation-delay:${Math.random()*1.5}s;`;
+          eggPetals.appendChild(p);
+          setTimeout(() => p.remove(), (dur + 1.5) * 1000);
+        }, i * 30);
+      }
+    }
+
+    function closeEgg() {
+      overlay.classList.remove('show');
+      eggPetals.innerHTML = '';
+    }
+
+    eggClose.addEventListener('click', closeEgg);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeEgg(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEgg(); });
+  })();
+
 </script>
+
 </body>
 </html>
