@@ -1813,13 +1813,12 @@
 
     <!-- TABS -->
     <div class="dl-tabs fade-in">
-      <button class="dl-tab active" data-tab="direct">Direct Download</button>
-      <button class="dl-tab" data-tab="itchio">From Itch.io</button>
-      <button class="dl-tab" data-tab="gh">GH Releases</button>
+      <button class="dl-tab active" data-tab="gh">GH Releases</button>
+      <button class="dl-tab" data-tab="others">Others</button>
     </div>
 
-    <!-- DIRECT DOWNLOAD -->
-    <div class="dl-grid" id="dl-direct">
+    <!-- GH RELEASES -->
+    <div class="dl-grid" id="dl-gh">
       <div class="dl-card fade-in">
         <span class="dl-icon"><i class="fa-brands fa-android"></i></span>
         <div class="dl-os">ANDROID</div>
@@ -1854,23 +1853,6 @@
           <i class="fa-solid fa-rocket"></i> Open App
         </a>
       </div>
-    </div>
-
-    <!-- ITCH.IO -->
-    <div class="dl-grid" id="dl-itchio" style="display:none;">
-      <div class="dl-card fade-in">
-        <span class="dl-icon"><i class="fa-brands fa-itch-io"></i></span>
-        <div class="dl-os">ITCH.IO</div>
-        <div class="dl-ver">v1.1.0 · Android & Web</div>
-        <a href="https://iamovi.itch.io/swipewaifu" target="_blank"
-           class="btn btn-accent" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px; margin-top:0.75rem;">
-          <i class="fa-solid fa-download"></i> Get on itch.io
-        </a>
-      </div>
-    </div>
-
-    <!-- GH RELEASES -->
-    <div class="dl-grid" id="dl-gh" style="display:none;">
       <div class="dl-card fade-in">
         <span class="dl-icon"><i class="fa-brands fa-github"></i></span>
         <div class="dl-os">GITHUB</div>
@@ -1878,6 +1860,28 @@
         <a href="https://github.com/iamovi/SwipeWaifu/releases" target="_blank"
            class="btn btn-white" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px; margin-top:0.75rem;">
           <i class="fa-brands fa-github"></i> View Releases
+        </a>
+      </div>
+    </div>
+
+    <!-- OTHERS -->
+    <div class="dl-grid" id="dl-others" style="display:none;">
+      <div class="dl-card fade-in">
+        <span class="dl-icon"><i class="fa-brands fa-itch-io"></i></span>
+        <div class="dl-os">ITCH.IO</div>
+        <div class="dl-ver">All Release Versions</div>
+        <a href="https://iamovi.itch.io/swipewaifu" target="_blank"
+           class="btn btn-accent" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px; margin-top:0.75rem;">
+          <i class="fa-solid fa-download"></i> Get on itch.io
+        </a>
+      </div>
+      <div class="dl-card fade-in">
+        <span class="dl-icon"><i class="fa-solid fa-gamepad"></i></span>
+        <div class="dl-os">GAME JOLT</div>
+        <div class="dl-ver">All Release Versions</div>
+        <a href="https://gamejolt.com/games/swipewaifu/1052272" target="_blank"
+           class="btn btn-accent" style="width:100%; justify-content:center; font-size:0.95rem; padding:7px 14px; margin-top:0.75rem;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Get on GameJolt
         </a>
       </div>
     </div>
@@ -2776,9 +2780,8 @@
   (function() {
     const tabs = document.querySelectorAll('.dl-tab');
     const grids = {
-      direct: document.getElementById('dl-direct'),
-      itchio: document.getElementById('dl-itchio'),
       gh:     document.getElementById('dl-gh'),
+      others: document.getElementById('dl-others'),
     };
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
