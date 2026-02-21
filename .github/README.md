@@ -1,40 +1,21 @@
-`SwipeWaifu`
+`SwipeWaifu` is an open-source anime waifu discovery app built for anime enthusiasts. Swipe to get random waifu, save your favorites, use keyboard shortcuts on desktop, and chat with the anime fanbase community and more — all in one place. available on android, web, and soon on windows & linux.
 
-![preview](./preview.png)
+the project aims to be fast, fun, and free — celebrating anime culture through clean design and a constantly growing image library. open source and community-driven, contributions are always welcome.
 
-> Discover unlimited anime waifu images! Swipe through 30+ categories, save favorites, and download your best finds and chat with Anime Fanbase.
+![preview](https://ik.imagekit.io/iamovi/SwipeWaifu/retouch_2026022102393968.jpg)
 
-**Live: [https://iamovi.github.io/SwipeWaifu/](https://iamovi.github.io/SwipeWaifu/)**
+### docs + apps
 
-## Features
+***[https://iamovi.github.io/SwipeWaifu/docs](https://iamovi.github.io/SwipeWaifu/docs)***
 
-- **Swipe or click** to fetch random waifu images
-- **30+ SFW categories** — waifu, neko, shinobu, megumin, and more
-- **NSFW mode** with age verification
-- **Favorites** — save and manage your collection
-- **Auto-slide** — sit back and watch with adjustable speed (2s / 3s / 5s / 10s)
-- **History navigation** — go back and forward through viewed images
-- **Keyboard shortcuts** — arrow keys, space, and more
-- **Desktop optimized** — side arrows, floating toolbar, sidebar menu
-- **Mobile optimized** — swipe gestures, fullscreen experience
-- **Dark / Light theme** toggle
-- **Sound effects** with mute control
-- **PWA** — installable on mobile and desktop
-- **Talks** — Anime fanbase community chat
-
-## Keyboard Shortcuts for PC
-
-| Key | Action |
-|-----|--------|
-| `→` `↓` | Next waifu |
-| `←` `↑` | Previous waifu |
-| `Space` | Toggle favorite |
-| `A` | Toggle auto-slide |
-| `M` | Mute / Unmute |
-| `?` | Show shortcuts |
+**visit here to know everything about SwipeWaifu and download it's apps!**
 
 ---
 
 created by [Ovi ren](https://iamovi.github.io)
 
+init.ovi@gmail.com
+
 released under [MIT license](../LICENSE)
+
+<img src="https://ik.imagekit.io/iamovi/SwipeWaifu/1000004798-removebg-preview.png" width="150" />
